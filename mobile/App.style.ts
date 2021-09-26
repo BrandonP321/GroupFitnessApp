@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { baseUi } from "./src/shared/styles/baseUi.style";
+import { baseUi } from "~BaseUI";
 
 export default StyleSheet.create({
     

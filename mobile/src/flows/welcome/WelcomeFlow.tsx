@@ -2,7 +2,7 @@ import React from "react"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import LoginScreen, { LoginScreenParamList } from "./LoginScreen/LoginScreen"
 import SplashScreen, { SplashScreenParamList } from "./SplashScreen/SplashScreen";
-import MainFlow, { mainScreens } from "../main/MainFlow";
+import MainFlow, { mainScreens } from "~Flow/main/MainFlow";
 
 export const welcomeScreens = {
     Splash: "Splash",

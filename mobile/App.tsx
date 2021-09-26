@@ -1,5 +1,5 @@
 import React from "react";
-import Navigation from "./src/global/navigation/Navigation";
+import Navigation from "~Navigation/Navigation";
 
 export default function App() {
   return (

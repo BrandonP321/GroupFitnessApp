@@ -1,6 +1,14 @@
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
-    "strict": true
-  }
+    "strict": true,
+    "baseUrl": ".",
+    "paths": {
+      "~Navigation/*": ["./src/global/navigation/*"],
+      "~Flow/*": ["./src/flows/*"],
+      "~Components/*": ["./src/shared/components/*"],
+      // resolution to a single file
+      "~BaseUI": ["./src/shared/styles/baseUi.style.ts"],
+    }
+  },
 }

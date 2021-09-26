@@ -4,14 +4,14 @@ module.exports = function(api) {
     presets: ["babel-preset-expo"],
     plugins: [
       [
-        "babel-plugin-root-import",
+        "module-resolver",
         {
-          "paths": [
-            {
-              "rootPathSuffix": "src",
-              "rootPathPrefix": "~"
-            }
-          ]
+          alias: {
+            "~Navigation": "./src/global/navigation",
+            "~Flow": "./src/flows",
+            "~Components": "./src/shared/components",
+            "~BaseUI": "./src/shared/styles/baseUi.style",
+          }
         }
       ]
     ]

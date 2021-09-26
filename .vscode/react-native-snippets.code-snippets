@@ -4,7 +4,7 @@
 		"prefix": "rnstyle",
 		"body": [
 			"import { StyleSheet } from \"react-native\";",
-			"import { baseUi } from \"\"",
+			"import { baseUi } from \"~BaseUI\"",
 			"",
 			"export default StyleSheet.create({",
 			"\t$1",
@@ -19,7 +19,7 @@
 			"import { View } from \"react-native\";",
 			"import { RouteProp } from \"@react-navigation/native\";",
 			"import { NativeStackNavigationProp } from \"@react-navigation/native-stack\";",
-			"import { RootStackParamList, screens } from \"../../../global/navigation/Navigation\";",
+			"import { RootStackParamList, screens } from \"~Navigation/Navigation\";",
 			"import styles from \"./$1Screen.style\";\n",
 			"export type $1ScreenParamList = {\n}\n",
 			"interface $1ScreenProps {",
