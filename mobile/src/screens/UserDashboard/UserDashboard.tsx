@@ -1,5 +1,5 @@
 import React from "react"
-import { View, Text, Button } from "react-native"
+import { View, Text } from "react-native"
 import { RouteProp } from "@react-navigation/native"
 import { NativeStackNavigationProp } from "@react-navigation/native-stack"
 import { RootStackParamList, screens } from "../../global/navigation/Navigation"

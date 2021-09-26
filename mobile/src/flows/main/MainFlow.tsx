@@ -1,6 +1,6 @@
 import React from "react"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
-import UserDashboard, { UserDashboardScreenParamList } from "./UserDashboard/UserDashboard";
+import UserDashboard, { UserDashboardScreenParamList } from "./UserDashboardScreen/UserDashboardScreen";
 
 export const mainScreens = {
     MainFlow: "MainFlow",
