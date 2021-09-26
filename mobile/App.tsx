@@ -1,11 +1,10 @@
-import { StatusBar } from "expo-status-bar";
 import React from "react";
-import { View } from "react-native";
-import styles from "./App.style";
+import Navigation from "./src/global/navigation/Navigation";
 
 export default function App() {
   return (
-    <View>
-    </View>
+    <>
+      <Navigation/>
+    </>
   );
 }
