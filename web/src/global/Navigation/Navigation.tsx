@@ -1,13 +1,33 @@
 import React, { ReactElement } from "react"
+import loadable, { LoadableComponent } from "@loadable/component";
+import { BrowserRouter as Router, Switch, Route, RouteProps } from "react-router-dom";
+import LoadingSpinnerWrapper from "~Components/LoadingSpinnerWrapper/LoadingSpinnerWrapper";
 
-interface Props {
-    
+export const routeFallbackOptions = {
+    fallback: <LoadingSpinnerWrapper isLoading={true} />
 }
 
-export default function Navigation(props: Props): ReactElement {
+export default function Navigation(): ReactElement {
     return (
-        <>
-            
-        </>
+        <Router>
+            <Switch>
+                {/* only loads in example area routes when url contains '/example/ */}
+                <AsyncRoute path="/example/" lazyComponent={loadable(() => import("~Areas/example/ExampleArea"), routeFallbackOptions)} />
+            </Switch>
+        </Router>
+    )
+}
+
+interface IAsyncRoute extends Omit<RouteProps, "component"> {
+    lazyComponent: LoadableComponent<any>
+}
+
+export const AsyncRoute = (props: IAsyncRoute) => {
+    const { lazyComponent, ...rest } = props;
+
+    return (
+        <Route
+            {...rest}
+            component={lazyComponent} />
     )
 }

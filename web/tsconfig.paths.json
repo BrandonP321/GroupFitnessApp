@@ -3,7 +3,8 @@
         "baseUrl": "./src",
         "paths": {
            "~Navigation/*" : ["./global/Navigation/*"],
-           "~Components/*": ["./shared/components/*"]
+           "~Components/*": ["./shared/components/*"],
+           "~Areas/*": ["./areas/*"]
          }
     }
 }
