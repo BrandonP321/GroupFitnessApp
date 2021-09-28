@@ -1,6 +1,6 @@
 import React, { ReactElement, useState } from "react"
 import { useParams } from "react-router";
-import LoadingSpinnerWrapper from "~Components/LoadingSpinnerWrapper/LoadingSpinnerWrapper"
+import LoadingSpinnerWrapper from "global/UI/LoadingSpinnerWrapper/LoadingSpinnerWrapper"
 import { ExamplePageUrlParams } from "../ExampleArea.types";
 import styles from "./ExamplePage.module.scss";
 

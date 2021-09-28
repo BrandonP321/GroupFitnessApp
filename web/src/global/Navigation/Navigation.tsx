@@ -1,35 +1,49 @@
-import React, { ReactElement } from "react"
-import loadable, { LoadableComponent } from "@loadable/component";
+import React, { ReactElement, useEffect } from "react"
+import loadable from "@loadable/component";
 import { BrowserRouter as Router, Switch, Route, RouteProps } from "react-router-dom";
-import LoadingSpinnerWrapper from "~Components/LoadingSpinnerWrapper/LoadingSpinnerWrapper";
-
-export const routeFallbackOptions = {
-    fallback: <LoadingSpinnerWrapper isLoading={true} />
-}
-
-const ExampleArea = loadable(() => import("~Areas/example/ExampleArea"), routeFallbackOptions);
+import Routes from "./Routes";
 
 export default function Navigation(): ReactElement {
     return (
         <Router>
             <Switch>
-                {/* only loads in example area routes when url contains '/example/ */}
-                <AsyncRoute path="/example/" lazyComponent={ExampleArea} />
+                {/* only loads in example area routes when url contains '/example' */}
+                <AsyncRoute path={Routes?.Example?.areaPath} lazyComponentDynamicImport={Routes?.Example?.lazyAreaComponentDynamicImport} />
             </Switch>
         </Router>
     )
 }
 
 interface IAsyncRoute extends Omit<RouteProps, "component"> {
-    lazyComponent: LoadableComponent<any>
+    /* dynamic import for component to be rendered by route */
+    lazyComponentDynamicImport: () => Promise<any>
 }
 
 export const AsyncRoute = (props: IAsyncRoute) => {
-    const { lazyComponent, ...rest } = props;
+    const { lazyComponentDynamicImport, ...rest } = props;
+
+    const lazyComponent = loadable(lazyComponentDynamicImport, { fallback: <RouteFallback/> })
 
     return (
         <Route
             {...rest}
             component={lazyComponent} />
     )
+}
+
+/**
+ * This component shows/hides the loading spinner wrapping the entire page
+ */
+export const RouteFallback = () => {
+    useEffect(() => {
+
+    }, [])
+
+    return (
+        <></>
+    )
+}
+
+export const routeFallbackOptions = {
+    fallback: <RouteFallback/>
 }

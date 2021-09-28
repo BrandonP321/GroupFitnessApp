@@ -1,16 +1,16 @@
-import loadable from "@loadable/component";
 import React, { ReactElement } from "react"
 import { BrowserRouter as Router, Switch } from "react-router-dom";
-import { AsyncRoute, routeFallbackOptions } from "~Navigation/Navigation";
-
-const ExamplePage = loadable(() => import("~Areas/example/ExamplePage/ExamplePage"), routeFallbackOptions);
+import RouteUtils from "utils/RouteUtils";
+import { Areas } from "~Navigation/AreaNames";
+import { AsyncRoute } from "~Navigation/Navigation";
+import { RouteNames } from "~Navigation/RouteNames";
 
 export default function ExampleArea(): ReactElement {
     return (
         <Router>
             <Switch>
                 {/* creates async component that is only rendered when it's exact path is hit */}
-                <AsyncRoute exact path="/example/test/:id" lazyComponent={ExamplePage}/>
+                <AsyncRoute exact path={RouteUtils.getRouteBasePath(Areas.Example, RouteNames.Example)} lazyComponentDynamicImport={() => import("./ExamplePage/ExamplePage")}/>
             </Switch>
         </Router>
     )

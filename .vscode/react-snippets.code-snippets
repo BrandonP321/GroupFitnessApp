@@ -7,6 +7,7 @@
 			"import { useParams } from \"react-router\";",
 			"import LoadingSpinnerWrapper from \"~Components/LoadingSpinnerWrapper/LoadingSpinnerWrapper\";",
 			"import styles from \"./${TM_FILENAME_BASE}.module.scss\";\n",
+			"// TODO: MOVE THIS INTERFACE TO THIS AREA'S TYPE DEFINITIONS FILE, DO NOT DELETE THIS INTERFACE",
 			"export interface ${TM_FILENAME_BASE}UrlParams{\n\t\n}\n",
 			"interface ${TM_FILENAME_BASE}Props {\n\n}\n",
 			"export default function ${TM_FILENAME_BASE}(props: ${TM_FILENAME_BASE}Props): ReactElement {",
