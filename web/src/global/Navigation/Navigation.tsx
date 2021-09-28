@@ -7,12 +7,14 @@ export const routeFallbackOptions = {
     fallback: <LoadingSpinnerWrapper isLoading={true} />
 }
 
+const ExampleArea = loadable(() => import("~Areas/example/ExampleArea"), routeFallbackOptions);
+
 export default function Navigation(): ReactElement {
     return (
         <Router>
             <Switch>
                 {/* only loads in example area routes when url contains '/example/ */}
-                <AsyncRoute path="/example/" lazyComponent={loadable(() => import("~Areas/example/ExampleArea"), routeFallbackOptions)} />
+                <AsyncRoute path="/example/" lazyComponent={ExampleArea} />
             </Switch>
         </Router>
     )
