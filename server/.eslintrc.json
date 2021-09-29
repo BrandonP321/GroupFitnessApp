@@ -1,6 +1,6 @@
 {
     "extends": [
-        "../react.eslintrc.json"
+        "../global.eslintrc.json"
     ],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
@@ -8,6 +8,7 @@
     "plugins": [
     ],
     "rules": {
+        "quotes": ["error", "double"]
     },
     "settings": {
     }
