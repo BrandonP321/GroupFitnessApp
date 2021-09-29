@@ -20,7 +20,7 @@
 	},
 	"react component boilerplate": {
 		"scope": "javascript,typescript,javascriptreact,typescriptreact",
-		"prefix": "tsrpage",
+		"prefix": "tsrcomp",
 		"body": [
 			"import React, { ReactElement } from \"react\";",
 			"import styles from \"./${TM_FILENAME_BASE}.module.scss\";\n",
