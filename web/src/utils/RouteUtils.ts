@@ -46,6 +46,4 @@ class RouteUtils {
     }
 }
 
-RouteUtils.getRoutePath<ExamplePageUrlParams>("Example", "Example", { id: "" })
-
 export default RouteUtils;
