@@ -3,10 +3,18 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
+import { Provider } from "react-redux";
+import { store } from "features/store";
+import { Responsive } from "features/responsive/Responsive";
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    {/* <Provider/> gives rest of the app access to the redux store */}
+    <Provider store={store}>
+      {/* initialize Responsive comopnent to begin updating redux state */}
+      <Responsive/>
+      <App />
+    </Provider>
   </React.StrictMode>,
   document.getElementById("root")
 );

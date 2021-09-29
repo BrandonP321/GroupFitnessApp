@@ -2,6 +2,8 @@ import React, { ReactElement, useEffect } from "react"
 import loadable from "@loadable/component";
 import { BrowserRouter as Router, Switch, Route, RouteProps } from "react-router-dom";
 import Routes from "./Routes";
+import { useAppDispatch } from "features/hooks";
+import { hidePageLoadingSpinner, showPageLoadingSpinner } from "features/pageLoading/pageLoadingSlice";
 
 export default function Navigation(): ReactElement {
     return (
@@ -35,9 +37,17 @@ export const AsyncRoute = (props: IAsyncRoute) => {
  * This component shows/hides the loading spinner wrapping the entire page
  */
 export const RouteFallback = () => {
-    useEffect(() => {
+    const dispatch = useAppDispatch();
 
+    useEffect(() => {
+        dispatch(showPageLoadingSpinner());
+
+        return hideFallbackSpinner
     }, [])
+
+    const hideFallbackSpinner = () => {
+        dispatch(hidePageLoadingSpinner());
+    }
 
     return (
         <></>

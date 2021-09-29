@@ -16,8 +16,8 @@ export default function ExamplePage(props: Props): ReactElement {
     const { id } = useParams<ExamplePageUrlParams>()
 
     return (
-        <LoadingSpinnerWrapper isLoading={isLoading}>
+        <div>
             <h1 className={styles.heading}>This is some crazy ass text!!!   This is some crazy ass text!!!   This is some crazy ass text!!!   This is some crazy ass text!!!   This is some crazy ass text!!!   This is some crazy ass text!!!   This is some crazy ass text!!!   This is some crazy ass text!!!   This is some crazy ass text!!!   This is some crazy ass text!!!   </h1>
-        </LoadingSpinnerWrapper>
+        </div>
     )
 }
