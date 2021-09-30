@@ -8564,7 +8564,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"expo@npm:^42.0.4, expo@npm:~42.0.1":
+"expo@npm:^42.0.4":
   version: 42.0.5
   resolution: "expo@npm:42.0.5"
   dependencies:
@@ -20292,24 +20292,6 @@ typescript@~4.0.0:
   checksum: 40b974f508d8aed28598087720e086ecd32a5fd3e945e95ea4457da04ee9bdb8bdd17fd91acff36dc5b7f0595a735929c514c40c402416bbb87c03f6fb782373
   languageName: node
   linkType: hard
-
-"yarnTestApp-823dd7@workspace:packages/yarnTestApp":
-  version: 0.0.0-use.local
-  resolution: "yarnTestApp-823dd7@workspace:packages/yarnTestApp"
-  dependencies:
-    "@babel/core": ^7.9.0
-    "@types/react": ~16.9.35
-    "@types/react-native": ~0.63.2
-    expo: ~42.0.1
-    expo-status-bar: ~1.0.4
-    expo-yarn-workspaces: ^1.5.2
-    react: 16.13.1
-    react-dom: 16.13.1
-    react-native: "https://github.com/expo/react-native/archive/sdk-42.0.0.tar.gz"
-    react-native-web: ~0.13.12
-    typescript: ~4.0.0
-  languageName: unknown
-  linkType: soft
 
 "yn@npm:3.1.1":
   version: 3.1.1

@@ -6,7 +6,6 @@ export default function App() {
   return (
     <>
       <Navigation/>
-      <Text>HI THERE</Text>
     </>
   );
 }

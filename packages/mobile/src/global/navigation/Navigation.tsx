@@ -6,14 +6,12 @@ import { View } from "react-native";
 
 export type RootStackParamList = WelcomeScreensParamLists & MainScreensParamLists
 
-// export const screens = {
-//     ...welcomeScreens,
-//     ...mainScreens
-// } as const;
+export const screens = {
+    ...welcomeScreens,
+    ...mainScreens
+} as const;
 
 const Navigation = () => {
-    // return <View/>
-
     return (
         <NavigationContainer>
             {/* all other flow navigators will be nested within the welcome flow */}
