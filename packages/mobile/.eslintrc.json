@@ -1,0 +1,14 @@
+{
+    "extends": [
+        "../../react.eslintrc.json"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+    },
+    "plugins": [
+    ],
+    "rules": {
+    },
+    "settings": {
+    }
+}
