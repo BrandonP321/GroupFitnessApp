@@ -3,7 +3,7 @@ import { ConfigOverride } from "./ConfigOverride";
 export type ValidConfigValue = string | boolean;
 type ValidParamOverrides = "live" | "dev";
 
-interface IConfigParamParams {
+export interface IConfigParamParams {
     value: ValidConfigValue;
     enabled: boolean;
     description?: string;

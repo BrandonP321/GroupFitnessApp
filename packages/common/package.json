@@ -1,4 +1,11 @@
 {
   "name": "@groupfitnessapp/common",
-  "packageManager": "yarn@3.0.2"
+  "packageManager": "yarn@3.0.2",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "tsc --build"
+  }
 }

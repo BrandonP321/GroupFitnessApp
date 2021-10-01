@@ -25,17 +25,18 @@ export class ConfigSystem implements IConfigSystem {
     }
 
     public getSubSystemsAndParams = () => {
-        const subSystems: ConfigSystem[] = []
-        const subParams: ConfigParam[] = []
+        const subSystems: { name: string; system: ConfigSystem; }[] = []
+        const subParams: { name: string; param: ConfigParam; }[] = []
         const subKeys = Object.keys(this.subSystemsAndParams);
 
-        for (let key in subKeys) {
+        for (let key of subKeys) {
             const paramOrSystem = this.subSystemsAndParams[key];
 
             if (paramOrSystem instanceof ConfigSystem) {
-                subSystems.push(paramOrSystem);
+                subSystems.push({ name: key, system: paramOrSystem });
             } else {
-                subParams.push(paramOrSystem);
+                console.log(key, this.enabled)
+                subParams.push({ name: key, param: paramOrSystem });
             }
         }
 

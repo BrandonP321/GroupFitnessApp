@@ -7,12 +7,16 @@
     "web:all:start": "concurrently --kill-others-on-fail \"yarn web:client:start\" \"yarn server:start\"",
     "mobile:client:start": "yarn workspace @groupfitnessapp/web start",
     "mobile:all:start": "concurrently --kill-others-on-fail \"yarn mobile:client:start\" \"yarn server:start\"",
-    "server:start": "yarn workspace @groupfitnessapp/server start"
+    "server:start": "yarn workspace @groupfitnessapp/server start",
+    "common:config:build": "yarn workspace @groupfitnessapp/common config:build"
   },
   "workspaces": [
     "packages/*"
   ],
   "devDependencies": {
     "concurrently": "^6.2.2"
+  },
+  "dependencies": {
+    "@groupfitnessapp/common": "workspace:packages/common"
   }
 }
