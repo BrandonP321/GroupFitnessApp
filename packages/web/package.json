@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@craco/craco": "^6.3.0",
+    "@groupfitnessapp/common": "1.0.0",
     "@loadable/component": "^5.15.0",
     "classnames": "^2.3.1",
     "destyle.css": "^3.0.0",
