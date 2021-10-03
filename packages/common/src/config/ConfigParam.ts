@@ -1,13 +1,13 @@
-import { ConfigOverride } from "./ConfigOverride";
+import { ConfigParamOverride } from "./ConfigOverride";
 
 export type ValidConfigValue = string | boolean;
-type ValidParamOverrides = "live" | "dev";
+export type ValidParamOverrides = "live" | "dev" | "local" | "stage";
 
 export interface IConfigParamParams {
     value: ValidConfigValue;
     enabled: boolean;
     description?: string;
-    overrides?: { [key in ValidParamOverrides]?: ConfigOverride };
+    overrides?: { [key in ValidParamOverrides]?: ConfigParamOverride };
 }
 
 interface IConfigParam extends IConfigParamParams {
@@ -16,11 +16,16 @@ interface IConfigParam extends IConfigParamParams {
 export class ConfigParam implements IConfigParam {
     public value;
     public enabled;
-    public readonly overrides;
+    public overrides;
 
     constructor(params: IConfigParamParams) {
         this.value = params.value;
         this.enabled = params.enabled;
         this.overrides = params.overrides;
+    }
+
+    /* returns value of parameter or override value if override is specified */
+    public getParamValue(env: ValidParamOverrides) {
+        return this.overrides?.[env]?.value ?? this.value;
     }
 }

@@ -1,11 +1,12 @@
 import express from "express";
-import { MasterConfig } from "@groupfitnessapp/common";
+import { MasterConfig } from "@groupfitnessapp/common/src/config";
+
 const app = express();
 
+console.log(MasterConfig)
 const PORT = 8000
 
 app.get("/", (req, res) => {
-    console.log(MasterConfig)
     res.send("Express says hello")
 })
 

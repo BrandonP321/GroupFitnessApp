@@ -3,12 +3,16 @@
   "packageManager": "yarn@3.0.2",
   "private": true,
   "scripts": {
-    "web:client:start": "yarn workspace @groupfitnessapp/web start",
-    "web:all:start": "concurrently --kill-others-on-fail \"yarn web:client:start\" \"yarn server:start\"",
-    "mobile:client:start": "yarn workspace @groupfitnessapp/web start",
-    "mobile:all:start": "concurrently --kill-others-on-fail \"yarn mobile:client:start\" \"yarn server:start\"",
-    "server:start": "yarn workspace @groupfitnessapp/server start",
-    "common:config:build": "yarn workspace @groupfitnessapp/common config:build"
+    "web": "yarn workspace @groupfitnessapp/web",
+    "mobile": "yarn workspace @groupfitnessapp/mobile",
+    "server": "yarn workspace @groupfitnessapp/server",
+    "common": "yarn workspace @groupfitnessapp/common",
+    "web:client:start": "yarn web start",
+    "web:start": "concurrently --kill-others-on-fail -n \"COMMON,SERVER,WEB\" -c \"yellow,magenta,cyan\" \"yarn common:watcher:start\" \"yarn server:start\" \"yarn web:client:start\"",
+    "mobile:client:start": "yarn mobile start",
+    "mobile:start": "concurrently --kill-others-on-fail -n \"COMMON,SERVER,MOBILE\" -c \"yellow,magenta,green\" \"yarn common:watcher:start\" \"yarn mobile:client:start\" \"yarn server:start\"",
+    "server:start": "concurrently --kill-others-on-fail -n \"COMMON,SERVER\" -c \"yellow,magenta\" \"yarn common:watcher:start start\" \"yarn server start\"",
+    "common:watcher:start": "yarn common watcher:start"
   },
   "workspaces": [
     "packages/*"
@@ -17,6 +21,5 @@
     "concurrently": "^6.2.2"
   },
   "dependencies": {
-    "@groupfitnessapp/common": "workspace:packages/common"
   }
 }

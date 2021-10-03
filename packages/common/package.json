@@ -6,6 +6,12 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "tsc --build"
+    "build": "tsc --build",
+    "watcherX:start": "ts-node ./scripts/fileWatcher.ts",
+    "watcher:start": "nodemon --watch ./src/config/systems --watch ./src/config/Master.config.ts ./scripts/fileWatcher.ts"
+  },
+  "dependencies": {
+    "log-timestamp": "^0.3.0",
+    "node-watch": "^0.7.2"
   }
 }

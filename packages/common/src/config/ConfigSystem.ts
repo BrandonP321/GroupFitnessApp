@@ -35,7 +35,6 @@ export class ConfigSystem implements IConfigSystem {
             if (paramOrSystem instanceof ConfigSystem) {
                 subSystems.push({ name: key, system: paramOrSystem });
             } else {
-                console.log(key, this.enabled)
                 subParams.push({ name: key, param: paramOrSystem });
             }
         }

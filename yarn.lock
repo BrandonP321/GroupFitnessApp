@@ -2189,6 +2189,9 @@ __metadata:
 "@groupfitnessapp/common@1.0.0, @groupfitnessapp/common@workspace:packages/common":
   version: 0.0.0-use.local
   resolution: "@groupfitnessapp/common@workspace:packages/common"
+  dependencies:
+    log-timestamp: ^0.3.0
+    node-watch: ^0.7.2
   languageName: unknown
   linkType: soft
 
@@ -2247,6 +2250,7 @@ __metadata:
   resolution: "@groupfitnessapp/web@workspace:packages/web"
   dependencies:
     "@craco/craco": ^6.3.0
+    "@groupfitnessapp/common": 1.0.0
     "@loadable/component": ^5.15.0
     "@reduxjs/toolkit": ^1.6.1
     "@types/loadable__component": ^5.13.4
@@ -12301,12 +12305,28 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"log-prefix@npm:0.1.1":
+  version: 0.1.1
+  resolution: "log-prefix@npm:0.1.1"
+  checksum: cd2fdbcd31520940b1294fde005322243c5d825882c82f9a734b3b81d94cd2c9b3cf063dfa62108db11b869c58bfa636b3ac4cd508f341dc203a8527251851f2
+  languageName: node
+  linkType: hard
+
 "log-symbols@npm:^2.2.0":
   version: 2.2.0
   resolution: "log-symbols@npm:2.2.0"
   dependencies:
     chalk: ^2.0.1
   checksum: 4c95e3b65f0352dbe91dc4989c10baf7a44e2ef5b0db7e6721e1476268e2b6f7090c3aa880d4f833a05c5c3ff18f4ec5215a09bd0099986d64a8186cfeb48ac8
+  languageName: node
+  linkType: hard
+
+"log-timestamp@npm:^0.3.0":
+  version: 0.3.0
+  resolution: "log-timestamp@npm:0.3.0"
+  dependencies:
+    log-prefix: 0.1.1
+  checksum: f685491d90d0958629a246e6003910f64a1b7e25273077376b4206c439a13cd32a047c8cc9da5b89c46c5a0320b689680dcc85cc87de849eb941d57cc66e429b
   languageName: node
   linkType: hard
 
@@ -13542,6 +13562,13 @@ fsevents@^1.2.7:
     "@rauschma/stringio": ^1.4.0
     "@types/node": ^16.4.13
   checksum: 1e6e990ab3616f79566fbbce2ec6c70c9add16e333fdc24f2ed4cb3785d0d69e87f43e63b2747c055acc8e0ab2d7fc086ce082e4da7648295aaaab9084510e99
+  languageName: node
+  linkType: hard
+
+"node-watch@npm:^0.7.2":
+  version: 0.7.2
+  resolution: "node-watch@npm:0.7.2"
+  checksum: 340eca43b97181e0e102a1d4b63aaa2b87f78818231e927e5604b01a847191442f938c8014629ca4ea4a7d2917607aef2a6b1b840d4bfd968101f17e0a190841
   languageName: node
   linkType: hard
 

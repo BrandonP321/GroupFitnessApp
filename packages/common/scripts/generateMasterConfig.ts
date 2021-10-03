@@ -1,7 +1,8 @@
-import { ValidConfigValue } from "../config/ConfigParam";
-import { ConfigSystem as System } from "../config/ConfigSystem";
-import { MasterConfigInstance } from "../config/Master.config";
+import { ValidConfigValue, ValidParamOverrides } from "../src/config/ConfigParam";
+import { ConfigSystem as System } from "../src/config/ConfigSystem";
+import { MasterConfigInstance } from "../src/config/Master.config";
 import fs from "fs"
+import { ConfigParamOverride } from "../src/config/ConfigOverride";
 
 interface MasterConfigParam {
     value: ValidConfigValue;
@@ -13,7 +14,7 @@ interface MasterConfigSystem {
     [key: string]: MasterConfigParam | boolean
 }
 
-export const generateMasterConfig = () => {
+export const generateMasterConfig = (env: ValidParamOverrides) => {
     const newMasterConfig: { [key: string]: MasterConfigSystem } = {}
 
     const helper = (system: { name: string; system: System }, parentIsDisabled: boolean = false) => {
@@ -49,7 +50,8 @@ export const generateMasterConfig = () => {
         // add each param to new system obj
         for (let { name, param } of subParams) {
             newSystem[name] = {
-                value: param.value,
+                // use param override for specified environment if it exists
+                value: param.getParamValue(env),
                 // make sure param is disabled if parent system is disabled
                 enabled: isCurrentSystemDisabled ? false : param.enabled
             };
@@ -66,6 +68,7 @@ export const generateMasterConfig = () => {
 
 // throws an error in the console if a given string doesn't match the correct format or system name is already taken
 const validateSystemOrParamName = (name: string, currentMasterConfig: { [key: string]: any }) => {
+    // regex to check that string starts with Capital letter and only contains letters
     const regex = /^[A-Z][A-Za-z]*$/;
     const isValidFormat = regex.test(name);
 
@@ -78,16 +81,14 @@ const validateSystemOrParamName = (name: string, currentMasterConfig: { [key: st
     return true;
 }
 
-// generates new JSON file in codegen folder
+// generates/overwrites JSON file in codegen folder
 const generateConfigJsonFile = (configObj: { [key: string]: any }) => {
     const json = JSON.stringify(configObj);
     try {
-        // write file to path relative to package.json
-        fs.writeFileSync("./codegen/Master.config.json", json)
-        console.log("Master config build successful");
+        fs.writeFileSync(`${__dirname}/../codegen/Master.config.json`, json)
+        console.log("\u001b[" + 93 + "m" + "MASTER CONFIG BUILD SUCCESSFUL" + "\u001b[0m")
     } catch (e) {
-        throw new Error("Master config build not successful");
+        console.error(e);
+        throw new Error("\u001b[" + 31 + "m" + "MASTER CONFIG BUILD NOT SUCCESSFUL" + "\u001b[0m");
     }
 }
-
-generateMasterConfig();
