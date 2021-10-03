@@ -8,7 +8,7 @@
       "~Flow/*": ["./src/flows/*"],
       "~Components/*": ["./src/shared/components/*"],
       // resolution to a single file
-      "~BaseUI": ["./src/shared/styles/baseUi.style.ts"],
+      "~BaseUI": ["src/styles/baseUi.style.ts"],
     }
   },
 }

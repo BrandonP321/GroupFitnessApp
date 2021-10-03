@@ -9612,7 +9612,6 @@ fsevents@^1.2.7:
   version: 0.0.0-use.local
   resolution: "groupfitnessapp@workspace:."
   dependencies:
-    "@groupfitnessapp/common": "workspace:packages/common"
     concurrently: ^6.2.2
   languageName: unknown
   linkType: soft
