@@ -42,9 +42,9 @@ export interface LoginUserResponse extends IUserShallowResponse {
 }
 
 export function LoginUser (urlParams: LoginUserUrlParams, bodyParams: LoginUserBodyParams): Promise<AxiosResponse<LoginUserResponse>> {
-    // const url = `${APIDomain}${APIUtils.getRouteString("RegisterUser", urlParams)}`;
+    const url = `${APIDomain}${APIUtils.getRouteString("RegisterUser", urlParams)}`;
 
-    // return axios.post(url, bodyParams);
+    return axios.post(url, bodyParams);
 }
 
 // PUT
