@@ -22,3 +22,8 @@ server/build
 .DS_Store
 *.gz
 .yarn/
+.env
+env.dev
+env.local
+env.staging
+env.live

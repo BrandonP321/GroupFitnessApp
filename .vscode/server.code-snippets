@@ -1,0 +1,11 @@
+{
+	"react page boilerplate": {
+		"scope": "javascript,typescript",
+		"prefix": "asdf",
+		"body": [
+			"import { ConfigSystem as System } from \"../ConfigSystem\";",
+			"import { ConfigParam as Param } from \"../ConfigParam\";\n",
+			"export const ${TM_FILENAME_BASE/(.*)\\..+$/$1/}Config = new System({ enabled: true, description: \"\" }, {\n\t$1\n})"
+		]
+	}
+}

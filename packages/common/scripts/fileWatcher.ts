@@ -35,5 +35,8 @@ import { generateMasterConfig } from "./generateMasterConfig";
 //   }() )
 // })
 
-// make initial call to build config file
+// build a config file for each environment
 generateMasterConfig("live");
+generateMasterConfig("dev");
+generateMasterConfig("stage");
+generateMasterConfig("local");

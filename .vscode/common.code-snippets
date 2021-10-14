@@ -1,5 +1,5 @@
 {
-	"react page boilerplate": {
+	"new config system": {
 		"scope": "javascript,typescript",
 		"prefix": "tsconfig",
 		"body": [
@@ -7,5 +7,31 @@
 			"import { ConfigParam as Param } from \"../ConfigParam\";\n",
 			"export const ${TM_FILENAME_BASE/(.*)\\..+$/$1/}Config = new System({ enabled: true, description: \"\" }, {\n\t$1\n})"
 		]
-	}
+	},
+	"new api requests file": {
+		"scope": "javascript,typescript",
+		"prefix": "tsapifile",
+		"body": [
+			"import axios, { AxiosResponse } from \"axios\";",
+			"import { APIUtils } from \"src/utils/APIUtils\";\n",
+			"const APIEndpoint = APIUtils.getApiEndpoint();",
+			"// GET\n",
+			"// POST\n",
+			"// PUT\n",
+			"// DELETE",
+		]
+	},
+	"new api requests function": {
+		"scope": "javascript,typescript",
+		"prefix": "tsapifunc",
+		"body": [
+			"export interface ${1}UrlParams {\n}\n",
+			"export interface ${1}BodyParams {\n}\n",
+			"export interface ${1}Response {\n}\n",
+			"export function ${1}(urlParams: ${1}UrlParams, bodyParams: ${1}BodyParams): Promise<AxiosResponse<${1}Response>> {",
+			"\tconst url = `${APIEndpoint}/`;\n",
+			"\treturn axios.${2}(url, bodyParams);",
+			"}"
+		]
+	},
 }

@@ -10,7 +10,7 @@ interface IConfigSystem {
     [key: string]: IConfigParam | boolean;
 }
 
-export default class ConfigUtils {
+export class ConfigUtils {
     /* returns param value or default value if param is disabled */
     public static getParam(param: IConfigParam, defaultValue: ValidConfigValue): ValidConfigValue {
         return param?.enabled ? param?.value : defaultValue;
