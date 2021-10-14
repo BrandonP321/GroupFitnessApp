@@ -63,7 +63,7 @@ export const generateMasterConfig = (env: ValidParamOverrides) => {
 
     helper({ name: "Master", system: MasterConfigInstance })
 
-    generateConfigJsonFile(newMasterConfig)
+    generateConfigJsonFile(newMasterConfig, env)
 }
 
 // throws an error in the console if a given string doesn't match the correct format or system name is already taken
@@ -82,13 +82,13 @@ const validateSystemOrParamName = (name: string, currentMasterConfig: { [key: st
 }
 
 // generates/overwrites JSON file in codegen folder
-const generateConfigJsonFile = (configObj: { [key: string]: any }) => {
+const generateConfigJsonFile = (configObj: { [key: string]: any }, env: ValidParamOverrides) => {
     const json = JSON.stringify(configObj);
     try {
-        fs.writeFileSync(`${__dirname}/../codegen/Master.config.json`, json)
-        console.log("\u001b[" + 93 + "m" + "MASTER CONFIG BUILD SUCCESSFUL" + "\u001b[0m")
+        fs.writeFileSync(`${__dirname}/../codegen/MasterConfig.${env}.json`, json)
+        console.log("\u001b[" + 93 + "m" + `${env.toUpperCase()} MASTER CONFIG BUILD SUCCESSFUL` + "\u001b[0m")
     } catch (e) {
         console.error(e);
-        throw new Error("\u001b[" + 31 + "m" + "MASTER CONFIG BUILD NOT SUCCESSFUL" + "\u001b[0m");
+        throw new Error("\u001b[" + 31 + "m" + `${env.toUpperCase()} MASTER CONFIG BUILD NOT SUCCESSFUL` + "\u001b[0m");
     }
 }

@@ -1,15 +1,24 @@
 import express from "express";
-import { MasterConfig } from "@groupfitnessapp/common/src/config";
+import { configureApp } from "./middleware/appConfiguration.middleware";
+import dotenv from "dotenv";
+import { createRoutes } from "./routes";
+import { EnvUtils, EnvVars } from "@groupfitnessapp/common/src/utils";
+import { connectToMongoDb } from "./models";
 
-const app = express();
+dotenv.config({ path: EnvUtils.getEnvFilePath() ?? "../.env" });
+const PORT = EnvUtils.getEnvVar(EnvVars.PORT, 8000);
 
-console.log(MasterConfig)
-const PORT = 8000
+export const app = express();
 
-app.get("/", (req, res) => {
-    res.send("Express says hello")
-})
+// MIDDLEWARE
+configureApp(app);
+
+// ROUTES
+createRoutes(app);
+
+// DB CONNECTION
+connectToMongoDb();
 
 app.listen(PORT, () => {
-    console.log("LISTENING");
+    console.log(`Server listening on port ${PORT}`);
 })

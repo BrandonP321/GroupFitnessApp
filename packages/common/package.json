@@ -11,7 +11,18 @@
     "watcher:start": "nodemon --watch ./src/config/systems --watch ./src/config/Master.config.ts ./scripts/fileWatcher.ts"
   },
   "dependencies": {
+    "axios": "^0.22.0",
+    "bcrypt": "^5.0.1",
+    "find-up": "^6.1.0",
+    "findup-sync": "^4.0.0",
     "log-timestamp": "^0.3.0",
     "node-watch": "^0.7.2"
+  },
+  "devDependencies": {
+    "@types/axios": "^0.14.0",
+    "@types/bcrypt": "^5.0.0",
+    "@types/findup-sync": "^4.0.1",
+    "@types/mongoose": "^5.11.97",
+    "mongoose": "^6.0.9"
   }
 }
