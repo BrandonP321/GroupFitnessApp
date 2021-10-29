@@ -5,12 +5,13 @@ import express, { Express } from "express";
 import cors from "cors";
 import helmet from "helmet";
 import session from "express-session";
+import expressMongoSanitize from "express-mongo-sanitize";
 
 export const configureApp = (app: Express) => {
     app.use(helmet());
 
     app.use(cors({
-        exposedHeaders: "auth-token"
+        // exposedHeaders: "auth-token"
     }));
 
     app.use(session({
@@ -27,4 +28,6 @@ export const configureApp = (app: Express) => {
 
     app.use(express.urlencoded({ extended: true }));
     app.use(express.json());
+
+    app.use(expressMongoSanitize());
 }

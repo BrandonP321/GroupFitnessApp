@@ -1,11 +1,12 @@
 import { ControllerUtils } from "../utils/ControllerUtils";
-import { GetAllUsersUrlParams, GetAllUsersBodyParams, GetUserUrlParams, GetUserBodyParams } from "@groupfitnessapp/common/src/api/requests/user.requests";
+import { GetAllUsersRequest, GetUserRequest } from "@groupfitnessapp/common/src/api/requests/user.requests";
 import db from "../models";
 import { HandleControllerErr } from "./errorHandlers/HandleControllerErr";
+import { TValidController } from "./index";
 
 // GET
 
-export const GetAllUsersController = ControllerUtils.createControllerFunc<GetAllUsersUrlParams, GetAllUsersBodyParams>((req, res) => {
+export const GetAllUsersController: TValidController = ControllerUtils.createControllerFunc<GetAllUsersRequest, {}>((req, res) => {
     db.User.find({}, (err, users) => {
         if (err) {
             return HandleControllerErr(err, res);
@@ -15,7 +16,7 @@ export const GetAllUsersController = ControllerUtils.createControllerFunc<GetAll
     })
 })
 
-export const GetUserController = ControllerUtils.createControllerFunc<GetUserUrlParams, GetUserBodyParams>((req, res) => {
+export const GetUserController: TValidController = ControllerUtils.createControllerFunc<GetUserRequest, {}>((req, res) => {
     res.send("GETTING SINGLE USER").end();
 })
 
@@ -24,7 +25,3 @@ export const GetUserController = ControllerUtils.createControllerFunc<GetUserUrl
 // PUT
 
 // DELETE
-
-// export const RegisterUserController = ControllerUtils.createControllerFunc<RegisterUserUrlParams, RegisterUserBodyParams>((req, res) => {
-//     res.send("HI").end();
-// })

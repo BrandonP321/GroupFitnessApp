@@ -6,7 +6,7 @@ import { EnvUtils, EnvVars } from "@groupfitnessapp/common/src/utils";
 import { connectToMongoDb } from "./models";
 
 dotenv.config({ path: EnvUtils.getEnvFilePath() ?? "../.env" });
-const PORT = EnvUtils.getEnvVar(EnvVars.PORT, 8000);
+const PORT = EnvUtils.getEnvVar(EnvVars.PORT, "8000");
 
 export const app = express();
 
