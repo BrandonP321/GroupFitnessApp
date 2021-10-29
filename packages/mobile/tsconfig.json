@@ -7,8 +7,7 @@
       "~Navigation/*": ["./src/global/navigation/*"],
       "~Flow/*": ["./src/flows/*"],
       "~Components/*": ["./src/components/*"],
-      // resolution to a single file
-      "~BaseUI": ["src/styles/baseUi.style.ts"],
+      "~BaseUI": ["./src/styles/baseUi.style.ts"],
     }
   },
 }

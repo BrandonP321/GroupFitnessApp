@@ -3,6 +3,7 @@ import { BottomTabNavigationOptions, createBottomTabNavigator } from "@react-nav
 import LoginScreen, { LoginScreenParamList } from "./LoginScreen/LoginScreen"
 import SplashScreen, { SplashScreenParamList } from "./SplashScreen/SplashScreen";
 import MainFlow, { mainScreens } from "~Flow/main/MainFlow";
+import HeaderWrapper from "~Components/HeaderWrapper/HeaderWrapper";
 
 export const welcomeScreens = {
     Splash: "Splash",
@@ -17,7 +18,7 @@ export type WelcomeScreensParamLists = {
 const Tab = createBottomTabNavigator();
 
 const WelcomeFlowSharedScreenOptions: BottomTabNavigationOptions = {
-    header: () => null
+    header: (props) => <HeaderWrapper {...props} showBackArrow={true}/>,
 }
 
 const SplashScreenOptions: BottomTabNavigationOptions = {

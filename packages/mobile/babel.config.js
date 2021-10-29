@@ -10,7 +10,7 @@ module.exports = function(api) {
             "~Navigation": "./src/global/navigation",
             "~Flow": "./src/flows",
             "~Components": "./src/components",
-            "~BaseUI": "./src/shared/styles/baseUi.style",
+            "~BaseUI": "./src/styles/baseUi.style",
           }
         }
       ]
