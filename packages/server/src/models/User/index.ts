@@ -2,8 +2,8 @@ import mongoose, { NativeError, Schema as ISchema, Model } from "mongoose";
 import uniqueValidator from "mongoose-unique-validator"
 import bcrypt from "bcrypt";
 import { RegexUtils } from "@groupfitnessapp/common/src/utils";
-import { IUserDocument, IUserModel } from "@groupfitnessapp/common/src/api/models/User.model";
-import { generateJWT, toAuthJSON, validatePassword } from "./UserMethods";
+import type { IUserDocument, IUserModel } from "@groupfitnessapp/common/src/api/models/User.model";
+import { generateAccessToken, generateRefreshToken, toFullUserJSON, toShallowUserJSON, validatePassword } from "./UserMethods";
 
 const { Schema } = mongoose;
 
@@ -16,19 +16,18 @@ const UserSchema: ISchema<IUserDocument, IUserModel, IUserDocument> = new Schema
         unique: true,
         index: true
     },
-    password: String
+    password: String,
+    jwtHash: String
 }, { timestamps: true })
 
 
 // PLUGINS
-
 
 /* plugin for error handling of unique fields on schema */
 UserSchema.plugin(uniqueValidator, { message: "{PATH} is already taken." })
 
 
 // MIDDLEWARE
-
 
 /* hash password before storing it */
 UserSchema.pre("save", async function save(next) {
@@ -52,13 +51,10 @@ UserSchema.pre("save", async function save(next) {
 UserSchema.methods.validatePassword = validatePassword;
 
 /* generate a web token for a given user */
-UserSchema.methods.generateJWT = generateJWT;
+UserSchema.methods.generateAccessToken = generateAccessToken;
+UserSchema.methods.generateRefreshToken = generateRefreshToken;
 
-/* JSON representation of a user that is passed to client on authentication */
-UserSchema.methods.toAuthJSON = toAuthJSON;
-
-// UserSchema.query.findUserById = function(id: ) {
-
-// };
+UserSchema.methods.toShallowUserJSON = toShallowUserJSON;
+UserSchema.methods.toFullUserJSON = toFullUserJSON;
 
 export const User = mongoose.model<IUserDocument, IUserModel>("User", UserSchema)

@@ -1,43 +1,42 @@
-import { IUserDocument, IUserModel, TFindUserById, TGenerateJWT, TToAuthJSON, TValidatePassword } from "@groupfitnessapp/common/src/api/models/User.model";
-import { EnvUtils } from "@groupfitnessapp/common/src/utils";
-import jwt from "jsonwebtoken";
+import { IUserModel, TGenerateAccessToken, TGenerateRefreshToken, TToFullUserJSON, TToShallowUserJSON, TValidatePassword } from "@groupfitnessapp/common/src/api/models/User.model";
 import bcrypt from "bcrypt";
-import mongoose, { Query } from "mongoose";
-
-let SECRET = EnvUtils.getEnvVar("SECRET", "secret");
+import { JWTUtils } from "../../utils/JWTUtils";
 
 /**
  * INSTANCE METHODS
  */
 
-
 export const validatePassword: TValidatePassword = async function(this: IUserModel, pass: string) {
     return bcrypt.compare(pass, this.password);
 }
 
-export const generateJWT: TGenerateJWT = function(this: IUserModel) {
-    const today = new Date();
-    const exp = new Date(today);
+export const generateAccessToken: TGenerateAccessToken = function(this: IUserModel, hash: string, expiresIn) {
+    console.log("hash:", this.jwtHash);
+    const token = JWTUtils.signAccessToken(this._id.toString(), hash, expiresIn);
 
-    // sets expiration date 60 days in the future
-    exp.setDate(today.getDate() + 60);
-
-    // due to type sensitivity, we need this check in place to ensure the secret hash is a string
-    if (SECRET && typeof SECRET === "string") {
-        return jwt.sign({
-            id: this._id,
-            // TODO: add email or username to signed object
-            exp: exp.getTime() / 1000
-        }, SECRET)
-    }
+    return token;
 }
 
-/* returns a JSON object with user data on authentication */
-export const toAuthJSON: TToAuthJSON = async function(this: IUserModel) {
+export const generateRefreshToken: TGenerateRefreshToken = function(this: IUserModel, hash) {
+    const token = JWTUtils.signRefreshToken(this._id.toString(), hash);
+
+    return token;
+}
+
+/* converts user response to a shallow response with only basic user info */
+export const toShallowUserJSON: TToShallowUserJSON = async function(this: IUserModel) {
     return {
         id: this._id.toString(),
         email: this.email,
-        token: this.generateJWT() ?? "",
+        createdAt: this.createdAt,
+        updatedAt: this.updatedAt
+    }
+}
+
+export const toFullUserJSON: TToFullUserJSON = async function(this: IUserModel) {
+    return {
+        id: this._id.toString(),
+        email: this.email,
         createdAt: this.createdAt,
         updatedAt: this.updatedAt
     }

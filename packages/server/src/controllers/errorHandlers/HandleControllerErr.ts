@@ -17,7 +17,7 @@ interface IAPIControllerErrResponse {
 /**
  * Handles the error thrown by a mongoose query callback according to the class instance of the error
  */
-export const HandleControllerErr = (err: CallbackError, res: Response<IAPIControllerErrResponse>) => {
+export const HandleControllerErr = (err: CallbackError, res: Response<any>) => {
     const ErrorResponse: IAPIControllerErrResponse = {
         errorType: APIControllerErrors.UnknownErr,
         msg: "An unexpected error has occurred"
