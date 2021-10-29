@@ -2,7 +2,6 @@ import React from "react"
 import { NavigationContainer } from "@react-navigation/native"
 import WelcomeFlow, { welcomeScreens, WelcomeScreensParamLists } from "../../flows/welcome/WelcomeFlow"
 import { mainScreens, MainScreensParamLists } from "~Flow/main/MainFlow";
-import { View } from "react-native";
 
 export type RootStackParamList = WelcomeScreensParamLists & MainScreensParamLists
 

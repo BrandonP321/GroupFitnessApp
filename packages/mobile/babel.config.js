@@ -9,7 +9,7 @@ module.exports = function(api) {
           alias: {
             "~Navigation": "./src/global/navigation",
             "~Flow": "./src/flows",
-            "~Components": "./src/shared/components",
+            "~Components": "./src/components",
             "~BaseUI": "./src/shared/styles/baseUi.style",
           }
         }
