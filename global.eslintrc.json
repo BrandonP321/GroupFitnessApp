@@ -2,11 +2,9 @@
     "env": {
         "es2021": true
     },
-    "extends": [
-    ],
+    "extends": [],
     "parserOptions": {
-        "ecmaFeatures": {
-        },
+        "ecmaFeatures": {},
         "ecmaVersion": 12,
         "sourceType": "module"
     },
@@ -14,15 +12,19 @@
         "@typescript-eslint"
     ],
     "rules": {
-        "quotes": ["error", "double"]
+        "quotes": [
+            "error",
+            "double"
+        ],
+        "no-duplicate-imports": "warn"
     },
     "settings": {
         "import/resolver": {
             "typescript": {},
             "babel-plugin-root-import": {
-              "rootPathPrefix": "~/",
-              "rootPathSuffix": "./"
+                "rootPathPrefix": "~/",
+                "rootPathSuffix": "./"
             }
-          }
+        }
     }
 }
