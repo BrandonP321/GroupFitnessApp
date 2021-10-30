@@ -6,7 +6,7 @@ import { TValidController } from "./index";
 
 // GET
 
-export const GetAllUsersController: TValidController = ControllerUtils.createControllerFunc<GetAllUsersRequest, {}>((req, res) => {
+export const GetAllUsersController: TValidController = ControllerUtils.createControllerFunc<GetAllUsersRequest, {}>(async (req, res) => {
     db.User.find({}, (err, users) => {
         if (err) {
             return HandleControllerErr(err, res);
@@ -16,7 +16,7 @@ export const GetAllUsersController: TValidController = ControllerUtils.createCon
     })
 })
 
-export const GetUserController: TValidController = ControllerUtils.createControllerFunc<GetUserRequest, {}>((req, res) => {
+export const GetUserController: TValidController = ControllerUtils.createControllerFunc<GetUserRequest, {}>(async (req, res) => {
     res.send("GETTING SINGLE USER").end();
 })
 
