@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from "axios";
-import { APIUtils } from "../../utils";
+import { APIUtils } from "../../utils/APIUtils";
 import { IUserShallowResponse } from "../models/User.model";
 import { ClientErrorStatusCodes, ServerErrorStatusCodes } from "./statusCodes";
 

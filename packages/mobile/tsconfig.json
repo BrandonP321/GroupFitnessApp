@@ -3,6 +3,8 @@
   "compilerOptions": {
     "strict": true,
     "baseUrl": ".",
+    "isolatedModules": true,
+    "esModuleInterop": true,
     "paths": {
       "~Navigation/*": ["./src/global/navigation/*"],
       "~Flow/*": ["./src/flows/*"],
@@ -10,4 +12,7 @@
       "~BaseUI": ["./src/styles/baseUi.style.ts"],
     }
   },
+  "references": [
+    { "path": "../common" }
+  ]
 }

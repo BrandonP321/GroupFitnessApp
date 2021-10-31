@@ -23,7 +23,6 @@
     "@react-navigation/native": "^6.0.2",
     "@react-navigation/native-stack": "^6.1.0",
     "@types/eslint": "^7.28.0",
-    "@types/node-sass": "^4.11.2",
     "@types/react": "~16.9.35",
     "@types/react-native": "~0.63.2",
     "@types/react-native-navigation": "^2.0.0",
