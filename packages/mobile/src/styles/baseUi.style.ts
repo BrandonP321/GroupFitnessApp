@@ -1,5 +1,5 @@
-import { colors } from "./colors.style";
+export { colors } from "./colors.style";
 
 export const baseUi = {
-    ...colors
-}
+
+} as const

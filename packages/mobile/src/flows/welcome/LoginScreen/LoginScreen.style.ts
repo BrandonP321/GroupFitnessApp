@@ -1,6 +1,9 @@
 import { StyleSheet } from "react-native";
-import { baseUi } from "src/styles/baseUi.style";
+import { baseUi, colors } from "~BaseUI";
 
 export default StyleSheet.create({
-    
+    loginScreen: {
+        // backgroundColor: colors.bodyBg,
+        height: "100%"
+    }
 });

@@ -1,7 +1,6 @@
 const AuthRoutes = {
     RegisterUser: "/api/auth/register",
     LoginUser: "/api/auth/login",
-    AuthTest: "/api/auth/test",
     RefreshTokens: "/api/auth/refresh-tokens"
 }
 

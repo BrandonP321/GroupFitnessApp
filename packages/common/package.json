@@ -1,8 +1,9 @@
 {
   "name": "@groupfitnessapp/common",
   "packageManager": "yarn@3.0.2",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "source": "index.ts",
+  "main": "./index.ts",
+  "module": "./index.ts",
   "version": "1.0.0",
   "private": true,
   "scripts": {
