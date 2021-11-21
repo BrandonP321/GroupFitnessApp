@@ -10,6 +10,7 @@ export const configureApp = (app: Express) => {
     app.use(helmet());
 
     app.use(cors({
+        // origin
         // exposedHeaders: "auth-token"
     }));
 

@@ -1,5 +1,5 @@
 const baseColors = {
-    baseColorBlack: "000"
+    baseColorBlack: "#000"
 }
 
 const textColors = {

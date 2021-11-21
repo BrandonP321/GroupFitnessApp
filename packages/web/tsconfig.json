@@ -18,11 +18,17 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true,
     "jsx": "react-jsx",
-    "baseUrl": "src"
+    "baseUrl": "src",
+    "noEmit": true,
+    "noImplicitAny": false
   },
   "include": [
     "src"
+  ],
+  "references": [
+    {
+      "path": "../common"
+    }
   ]
 }

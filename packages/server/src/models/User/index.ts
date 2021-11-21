@@ -1,9 +1,10 @@
-import mongoose, { NativeError, Schema as ISchema, Model } from "mongoose";
-import uniqueValidator from "mongoose-unique-validator"
+import mongoose, { NativeError, Schema as ISchema, Model, Mongoose, Error, ErrorHandlingMiddlewareFunction } from "mongoose";
 import bcrypt from "bcrypt";
 import { RegexUtils } from "@groupfitnessapp/common/src/utils";
-import type { IUserDocument, IUserModel } from "@groupfitnessapp/common/src/api/models/User.model";
-import { generateAccessToken, generateRefreshToken, toFullUserJSON, toShallowUserJSON, validatePassword } from "./UserMethods";
+import type { IUser, IUserDocument, IUserModel } from "@groupfitnessapp/common/src/api/models/User.model";
+import { generateAccessToken, generateRefreshToken, handleUserDocSaveErr, toFullUserJSON, toShallowUserJSON, validatePassword } from "./UserMethods";
+import { ValidErrRes } from "utils/ControllerUtils";
+import { RegisterUserErrors, RegisterUserErrResponse } from "@groupfitnessapp/common/src/api/requests/auth.types";
 
 const { Schema } = mongoose;
 
@@ -12,11 +13,28 @@ const UserSchema: ISchema<IUserDocument, IUserModel, IUserDocument> = new Schema
         type: String,
         lowercase: true,
         required: [true, "Email Required"],
-        match: [RegexUtils.GetEmailRegex(), "Email is invalid"],
+        match: [RegexUtils.emailRegex, "Email is invalid"],
         unique: true,
         index: true
     },
-    password: String,
+    password: {
+        type: String,
+        required: [true, "Password Required"],
+        match: [RegexUtils.passwordRegex, "Password is invalid"]
+    },
+    username: {
+        type: String,
+        required: [true, "Username Required"],
+        unique: true,
+        index: true
+    },
+    fullName: {
+        type: String,
+        required: [true, "Name Required"]
+    },
+    phone: {
+        type: String
+    },
     jwtHash: String
 }, { timestamps: true })
 
@@ -24,7 +42,7 @@ const UserSchema: ISchema<IUserDocument, IUserModel, IUserDocument> = new Schema
 // PLUGINS
 
 /* plugin for error handling of unique fields on schema */
-UserSchema.plugin(uniqueValidator, { message: "{PATH} is already taken." })
+// UserSchema.plugin(uniqueValidator, { message: "{PATH} is already taken." })
 
 
 // MIDDLEWARE
@@ -46,6 +64,8 @@ UserSchema.pre("save", async function save(next) {
     }
 });
 
+/* handles any errors when new User document can't be created */
+UserSchema.post("save", handleUserDocSaveErr);
 
 /* compare given password to encrypted password */
 UserSchema.methods.validatePassword = validatePassword;

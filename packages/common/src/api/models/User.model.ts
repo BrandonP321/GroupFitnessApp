@@ -6,6 +6,9 @@ import type { Response } from "express";
 export interface IUser extends IBaseModelProperties {
     email: string;
     password: string;
+    fullName: string;
+    username: string;
+    phone: string
     /* random hash used to enforce refresh jwt's only being used once */
     jwtHash: string;
 }
