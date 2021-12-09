@@ -2,11 +2,11 @@ import { ControllerUtils } from "../utils/ControllerUtils";
 import { GetAllUsersRequest, GetUserRequest } from "@groupfitnessapp/common/src/api/requests/user.requests";
 import db from "../models";
 import { HandleControllerErr } from "./errorHandlers/HandleControllerErr";
-import { TValidController } from "./index";
+import { RouteController } from "./index";
 
 // GET
 
-export const GetAllUsersController: TValidController = ControllerUtils.createControllerFunc<GetAllUsersRequest, {}>(async (req, res) => {
+export const GetAllUsersController: RouteController<GetAllUsersRequest, {}> = async (req, res) => {
     db.User.find({}, (err, users) => {
         if (err) {
             return HandleControllerErr(err, res);
@@ -14,11 +14,11 @@ export const GetAllUsersController: TValidController = ControllerUtils.createCon
 
         res.json(users).end();
     })
-})
+}
 
-export const GetUserController: TValidController = ControllerUtils.createControllerFunc<GetUserRequest, {}>(async (req, res) => {
+export const GetUserController: RouteController<GetUserRequest, {}> = async (req, res) => {
     res.send("GETTING SINGLE USER").end();
-})
+}
 
 // POST
 

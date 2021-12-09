@@ -5,7 +5,7 @@ import db from "../models"
 import { CallbackError, NativeError } from "mongoose";
 import { IUser, IUserDocument } from "@groupfitnessapp/common/src/api/models/User.model";
 import { JWTUtils } from "../utils/JWTUtils";
-import { TValidController } from "./index";
+import { RouteController } from "./index";
 import bcrypt from "bcrypt";
 import { AuthUtils, EnvUtils, EnvVars } from "@groupfitnessapp/common/src/utils";
 import { ClientErrorStatusCodes, ServerErrorStatusCodes } from "@groupfitnessapp/common/src/api/requests/statusCodes";
@@ -13,7 +13,7 @@ import { IUserDocSaveErr } from "models/User/UserMethods";
 
 const SECRET = EnvUtils.getEnvVar(EnvVars.SECRET, "");
 
-export const RegisterUserController: TValidController = ControllerUtils.createControllerFunc<RegisterUserRequest, {}>(async (req, res) => {
+export const RegisterUserController: RouteController<RegisterUserRequest, {}> = async (req, res) => {
     const { email, fullName, password, passwordReEnter, phone, username } = req.body;
 
     // validate input from user
@@ -59,9 +59,9 @@ export const RegisterUserController: TValidController = ControllerUtils.createCo
             refreshToken
         }).end();
     })
-})
+}
 
-export const LoginUserController: TValidController = ControllerUtils.createControllerFunc<LoginUserRequest, {}>(async (req, res) => {
+export const LoginUserController: RouteController<LoginUserRequest, {}> = async (req, res) => {
     const { email, password } = req.body;
 
     const inputErr = AuthUtils.validateLoginFields({ email, password });
@@ -111,9 +111,9 @@ export const LoginUserController: TValidController = ControllerUtils.createContr
             refreshToken
         }).end();
     })
-})
+}
 
-export const RefreshTokensController: TValidController = ControllerUtils.createControllerFunc<RefreshTokensRequest, {}>(async (req, res) => {
+export const RefreshTokensController: RouteController<RefreshTokensRequest, {}> = async (req, res) => {
     const refreshToken = JWTUtils.getTokenFromHeader(req);
     const { status, userId, jwtHash } = JWTUtils.verifyRefreshToken(refreshToken ?? null);
 
@@ -132,7 +132,7 @@ export const RefreshTokensController: TValidController = ControllerUtils.createC
         // if refreh token's hash matches hash in db, allow tokens to be refreshed
         if (user.jwtHash === jwtHash) {
             // hash that will be used to enforce that a refresh token is only used once
-            const newTokenHash = await bcrypt.hash(SECRET, 10);
+            const newTokenHash = await generateRandomHash();
 
             db.User.updateOne({ _id: userId }, { $set: { jwtHash: newTokenHash } }, async (err: NativeError, data: any) => {
                 if (err) {
@@ -155,7 +155,7 @@ export const RefreshTokensController: TValidController = ControllerUtils.createC
             return res.status(401).end();
         }
     })
-})
+}
 
 const generateRandomHash = async () => {
     return await bcrypt.hash(SECRET, 10)
