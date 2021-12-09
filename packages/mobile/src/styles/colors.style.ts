@@ -1,5 +1,6 @@
 const baseColors = {
-    baseColorBlack: "#000"
+    dark: "#000",
+    white: "#fff"
 }
 
 const textColors = {
@@ -7,7 +8,7 @@ const textColors = {
 }
 
 const appColors = {
-    bodyBg: baseColors.baseColorBlack
+    bodyBg: baseColors.white
 }
 
 export const colors = {

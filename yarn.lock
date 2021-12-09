@@ -2245,9 +2245,11 @@ __metadata:
     "@react-navigation/native-stack": ^6.1.0
     "@reduxjs/toolkit": ^1.6.2
     "@types/eslint": ^7.28.0
+    "@types/luxon": ^2.0.7
     "@types/react": ~16.9.35
     "@types/react-native": ~0.63.2
     "@types/react-native-navigation": ^2.0.0
+    "@types/react-native-table-component": ^1.2.2
     "@types/react-navigation": ^3.4.0
     "@types/react-redux": ^7.1.20
     "@typescript-eslint/eslint-plugin": ^4.31.2
@@ -2259,13 +2261,19 @@ __metadata:
     eslint-plugin-promise: ^5.1.0
     eslint-plugin-react: ^7.26.0
     expo: ^42.0.4
+    expo-linear-gradient: ^10.0.3
     expo-secure-store: ^10.2.0
     expo-status-bar: ~1.0.4
     expo-yarn-workspaces: ^1.5.2
+    luxon: ^2.1.1
     react: 16.13.1
     react-dom: 16.13.1
     react-native: "https://github.com/expo/react-native/archive/sdk-42.0.0.tar.gz"
+    react-native-chart-kit: ^6.11.0
     react-native-gesture-handler: ^1.10.3
+    react-native-screens: ^3.9.0
+    react-native-svg: ^12.1.1
+    react-native-table-component: ^1.2.1
     react-native-web: ~0.13.12
     react-navigation: ^4.4.4
     react-redux: ^7.2.6
@@ -3545,6 +3553,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/luxon@npm:^2.0.7":
+  version: 2.0.7
+  resolution: "@types/luxon@npm:2.0.7"
+  checksum: 81ee3bf5085dac398468e788c2bdc9d36a28c673453f335b6bfe0b31bacb907a7368b09e1794c93702e73c5ebf2733c562c2bfb12768e893a58ce7dc70beacd9
+  languageName: node
+  linkType: hard
+
 "@types/micromatch@npm:*":
   version: 4.0.2
   resolution: "@types/micromatch@npm:4.0.2"
@@ -3708,6 +3723,26 @@ __metadata:
   dependencies:
     react-native-navigation: "*"
   checksum: d5754bc707aeb7587391dda41f35a42f47e65254c6ae7d6788281dfca572edba3edec34af039c5dc089e38882da7583dcfd3706182cc664c9166025a8a88c12b
+  languageName: node
+  linkType: hard
+
+"@types/react-native-table-component@npm:^1.2.2":
+  version: 1.2.2
+  resolution: "@types/react-native-table-component@npm:1.2.2"
+  dependencies:
+    "@types/react": "*"
+    "@types/react-native": "*"
+    csstype: ^3.0.3
+  checksum: d1e27af323e72fd157cf54e150bf024c5f4245daef563937fd6733ce7487e16d0d7efa5e0143e1673463446163856227f20bb8b396f64741cdde4161378a90f2
+  languageName: node
+  linkType: hard
+
+"@types/react-native@npm:*":
+  version: 0.66.6
+  resolution: "@types/react-native@npm:0.66.6"
+  dependencies:
+    "@types/react": "*"
+  checksum: fba05b80bf2cf973f4448e9561df567f55988729a0a3b5ad633f07c9ab06f850658bf2ccf2a52cc947827322ecf120241a4f7a4e55485b9c6cdbbbad154d8635
   languageName: node
   linkType: hard
 
@@ -7095,7 +7130,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"css-select@npm:^2.0.0":
+"css-select@npm:^2.0.0, css-select@npm:^2.1.0":
   version: 2.1.0
   resolution: "css-select@npm:2.1.0"
   dependencies:
@@ -7130,7 +7165,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"css-tree@npm:^1.1.2":
+"css-tree@npm:^1.0.0-alpha.39, css-tree@npm:^1.1.2":
   version: 1.1.3
   resolution: "css-tree@npm:1.1.3"
   dependencies:
@@ -7307,6 +7342,13 @@ __metadata:
   version: 3.0.9
   resolution: "csstype@npm:3.0.9"
   checksum: 199f9af7e673f9f188525c3102a329d637ff46c52f6385a4427ff5cb17adcb736189150170a7af7c5701d18d7704bdad130273f4aa7e44c6c4f9967e6115dc93
+  languageName: node
+  linkType: hard
+
+"csstype@npm:^3.0.3":
+  version: 3.0.10
+  resolution: "csstype@npm:3.0.10"
+  checksum: 20a8fa324f2b33ddf94aa7507d1b6ab3daa6f3cc308888dc50126585d7952f2471de69b2dbe0635d1fdc31223fef8e070842691877e725caf456e2378685a631
   languageName: node
   linkType: hard
 
@@ -8843,6 +8885,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"expo-linear-gradient@npm:^10.0.3":
+  version: 10.0.3
+  resolution: "expo-linear-gradient@npm:10.0.3"
+  dependencies:
+    expo-modules-core: ~0.4.4
+  checksum: f8b18e3da6aa4f190bfa3c9cc00051481340008717e729cb0bc6ff7ac25fd5b9540d572f707f565d89db845355f62fff45d9639912ca097c90716c60cbd46fc6
+  languageName: node
+  linkType: hard
+
 "expo-modules-autolinking@npm:^0.0.3":
   version: 0.0.3
   resolution: "expo-modules-autolinking@npm:0.0.3"
@@ -8862,6 +8913,16 @@ __metadata:
   version: 0.2.0
   resolution: "expo-modules-core@npm:0.2.0"
   checksum: 35fd1edb8fcb2b86e9a39959374524b2552d3ab873b29d13168d5d551b759f688de51460bee029013f78f165f4620263a145d1f440c029ea1162440ba43ffbee
+  languageName: node
+  linkType: hard
+
+"expo-modules-core@npm:~0.4.4":
+  version: 0.4.8
+  resolution: "expo-modules-core@npm:0.4.8"
+  dependencies:
+    compare-versions: ^3.4.0
+    invariant: ^2.2.4
+  checksum: ea931c59b54e9139bebd717734e52d221a5ed29f1ea0bd9eb46e2ef1271aebb57e25316ed39b6ae7e6c1c2a4859f6bf76e4dd9cb711c9a56e1fed8d3bf8c1ff2
   languageName: node
   linkType: hard
 
@@ -12948,6 +13009,13 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"luxon@npm:^2.1.1":
+  version: 2.1.1
+  resolution: "luxon@npm:2.1.1"
+  checksum: 6d562796c4df195988f2afdca733e5a36457d6449c196cbf16710c706fde8d6b96c7d47fa54cd37c0cb29e4d2e7d8628a9677f36e23490139a8c90232f489e02
+  languageName: node
+  linkType: hard
+
 "magic-string@npm:^0.25.0, magic-string@npm:^0.25.7":
   version: 0.25.7
   resolution: "magic-string@npm:0.25.7"
@@ -15049,6 +15117,13 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"paths-js@npm:^0.4.10":
+  version: 0.4.11
+  resolution: "paths-js@npm:0.4.11"
+  checksum: a2e968450d4c02a3aed2866c28766e6d386afd9a4ed5f8fe9c4f87e6867ef57d94d0e7a184f8987dfa7c59fed2519e10052320505b5bd1fd7a28dea7bb94995d
+  languageName: node
+  linkType: hard
+
 "pbkdf2@npm:^3.0.3":
   version: 3.1.2
   resolution: "pbkdf2@npm:3.1.2"
@@ -15219,6 +15294,13 @@ fsevents@^1.2.7:
   dependencies:
     ts-pnp: ^1.1.6
   checksum: a41716d13607be5a3e06ba58b17e9e619cf07da3a0a7b10bd41cd89362873041054fd2b7966ad30a1b26b826cfb8fecc0469a95902d5b1b8ba8f591e2fe6b96d
+  languageName: node
+  linkType: hard
+
+"point-in-polygon@npm:^1.0.1":
+  version: 1.1.0
+  resolution: "point-in-polygon@npm:1.1.0"
+  checksum: 67a6374f0b79bc872bde8e375d7d5ea011a1419c5f4320dfb7705801cd3a8fcaee8bff385465e075b2ce863bbc86ccd74c63345d9f326981cd0807642bc5199c
   languageName: node
   linkType: hard
 
@@ -16589,6 +16671,15 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"react-freeze@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "react-freeze@npm:1.0.0"
+  peerDependencies:
+    react: ^17.0.0
+  checksum: c746b9d369c77296c277626cf7dd5ff24d49657e2f16412d14f845d1b428588184c0009374119f7dec24be37ab8c134d15aa4ecd57360c874880af508dcc577b
+  languageName: node
+  linkType: hard
+
 "react-helmet-async@npm:*, react-helmet-async@npm:^1.1.2":
   version: 1.1.2
   resolution: "react-helmet-async@npm:1.1.2"
@@ -16623,6 +16714,21 @@ fsevents@^1.2.7:
   version: 2.0.0
   resolution: "react-lifecycles-compat@npm:2.0.0"
   checksum: ace0e1edfa1a544a67a354084c2dc64556e37695c2ad10118ec3e09c491dfe68c5f9332cbcb4963b0dd7c38d22f094ebe700e7d816108e0a28627a4a5e693ba3
+  languageName: node
+  linkType: hard
+
+"react-native-chart-kit@npm:^6.11.0":
+  version: 6.11.0
+  resolution: "react-native-chart-kit@npm:6.11.0"
+  dependencies:
+    lodash: ^4.17.13
+    paths-js: ^0.4.10
+    point-in-polygon: ^1.0.1
+  peerDependencies:
+    react: "> 16.7.0"
+    react-native: ">= 0.50.0"
+    react-native-svg: "> 6.4.1"
+  checksum: f79127df364898cc588bc77dac36c138afcfd6e45f4de223e22ca2f6e3d62424eb28e318b231a991a54af634e7d930f7f6d36765db980b94ced8ee4cbc24f0c8
   languageName: node
   linkType: hard
 
@@ -16680,6 +16786,39 @@ fsevents@^1.2.7:
     react: "*"
     react-native: "*"
   checksum: 529546da1f7e1bfa7ae958cb301633bbb568e5b0d025cc15e689a4842a9cb6716c3ee4ae25994910943186212d7aaf7de2b7004c88e5fe332f97077edb7da51d
+  languageName: node
+  linkType: hard
+
+"react-native-screens@npm:^3.9.0":
+  version: 3.9.0
+  resolution: "react-native-screens@npm:3.9.0"
+  dependencies:
+    react-freeze: ^1.0.0
+    warn-once: ^0.1.0
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: bf2dff55c2f5ca2a7d9e564ce42c6601d443b39f73933c9943ae5ab280eb9d0d119621212b8e841d55c4d65ad283df67bd31371f49624ebf12ca5b652cb00f36
+  languageName: node
+  linkType: hard
+
+"react-native-svg@npm:^12.1.1":
+  version: 12.2.0
+  resolution: "react-native-svg@npm:12.2.0"
+  dependencies:
+    css-select: ^2.1.0
+    css-tree: ^1.0.0-alpha.39
+  peerDependencies:
+    react: "*"
+    react-native: ">=0.50.0"
+  checksum: 9099e5775fa03f2c6c49d65afc3a67cf9b98e0829c06bcf117c8dc02b4b2ab6ce26eac1152d2b25fc66cc62eb86d661b7dc871390e88e24df9eff67b188b948a
+  languageName: node
+  linkType: hard
+
+"react-native-table-component@npm:^1.2.1":
+  version: 1.2.1
+  resolution: "react-native-table-component@npm:1.2.1"
+  checksum: 7864f8d5b0e7d59bb70a44c8d7138487530644aaf52b167a3e3cdac52bb803332ee4121965984301362605e3c615ad7a5bc073ef0ddfd65e12a242101b9e5c37
   languageName: node
   linkType: hard
 

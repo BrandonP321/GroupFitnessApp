@@ -1,0 +1,17 @@
+[
+    {
+        "title": "Giant Set Workout",
+        "exercises": [
+            {
+                "name": "Bench Press",
+                "isCircuit": false,
+                "rows": [
+                    ["Set", "Reps", "Rest", "Notes"],
+                    ["1", "12-15", "45sec", "these are some notes"],
+                    ["2", "10-12", "45sec", null],
+                    ["1", "8-10", null, "The above should be empty"]
+                ]
+            }
+        ]
+    }
+]

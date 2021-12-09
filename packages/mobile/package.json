@@ -15,7 +15,13 @@
     "@react-native-async-storage/async-storage": "^1.15.9",
     "@reduxjs/toolkit": "^1.6.2",
     "expo": "^42.0.4",
-    "expo-secure-store": "^10.2.0"
+    "expo-linear-gradient": "^10.0.3",
+    "expo-secure-store": "^10.2.0",
+    "luxon": "^2.1.1",
+    "react-native-chart-kit": "^6.11.0",
+    "react-native-screens": "^3.9.0",
+    "react-native-svg": "^12.1.1",
+    "react-native-table-component": "^1.2.1"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
@@ -23,9 +29,11 @@
     "@react-navigation/native": "^6.0.2",
     "@react-navigation/native-stack": "^6.1.0",
     "@types/eslint": "^7.28.0",
+    "@types/luxon": "^2.0.7",
     "@types/react": "~16.9.35",
     "@types/react-native": "~0.63.2",
     "@types/react-native-navigation": "^2.0.0",
+    "@types/react-native-table-component": "^1.2.2",
     "@types/react-navigation": "^3.4.0",
     "@types/react-redux": "^7.1.20",
     "@typescript-eslint/eslint-plugin": "^4.31.2",

@@ -24,7 +24,8 @@ export default StyleSheet.create({
         paddingRight: 10,
         paddingBottom: 20,
         paddingLeft: 10,
-        height: 100
+        height: 100,
+        backgroundColor: "#fff"
     },
     leftContent: {
         ...leftAndRightContent
