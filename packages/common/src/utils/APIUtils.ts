@@ -7,7 +7,9 @@ export class APIUtils {
         return "http://10.0.0.172:8000";
     }
 
-    /* returns the url for a given route, replacing params in url with appropriate values if provided */
+    /**
+     * returns the url for a given api route, replacing url params with their provided values
+     */
     public static getRouteString = (route: ValidRoute, urlParams?: { [key: string]: any }) => {
         let routeStr = Routes[route] ?? "";
 

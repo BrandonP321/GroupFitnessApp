@@ -1,19 +1,21 @@
 import { NavigatorScreenParams } from "@react-navigation/native";
-import { RootStackParamList } from "~Navigation/Screens";
+import { ProfileFlowScreenParamList } from "~Flow/profile/ProfileScreens";
 
 export const MainScreens = {
-    MainFlow: "MainFlow",
     UserDashboard: "UserDashboard",
-    UserProfile: "UserProfile",
-    AllMessages: "AllMessages"
+    WorkoutList: "WorkoutList",
+    WorkoutFlow: "WorkoutFlow",
+    ProfileFlow: "ProfileFlow"
 } as const;
 
-export type MainFlowScreenParamList = NavigatorScreenParams<RootStackParamList>
-
-export type UserDashboardScreenParamList = {
-    userId: string
-}
-
 export type MainScreensParamLists = {
-    [MainScreens.UserDashboard]: UserDashboardScreenParamList
+    [MainScreens.UserDashboard]: {
+        userId: string
+    };
+    [MainScreens.WorkoutList]: undefined;
+    // TODO: add user flow stack param list as type here
+    [MainScreens.WorkoutFlow]: undefined;
+    [MainScreens.ProfileFlow]: ProfileFlowScreenParamList;
 }
+
+export type MainFlowScreenParamList = NavigatorScreenParams<MainScreensParamLists>

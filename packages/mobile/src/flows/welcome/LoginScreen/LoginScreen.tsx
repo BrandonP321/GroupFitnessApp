@@ -2,23 +2,22 @@ import React, { useState, useEffect } from "react"
 import { View, Text, Button } from "react-native"
 import { RouteProp } from "@react-navigation/native"
 import { NativeStackNavigationProp } from "@react-navigation/native-stack"
-import { RootStackParamList, Screens } from "~Navigation/Screens"
+import { RootStackParamList, ScreenProps, Screens } from "~Navigation/Screens"
 import styles from "./LoginScreen.style"
 import TextInputField from "~Components/TextInputField/TextInputField";
 import { RegisterUser, LoginUser } from "@groupfitnessapp/common/src/api/requests/auth.requests";
 import { StorageUtils } from "../../../../utils/StorageUtils"
 import { useAppDispatch } from "../../../features/hooks"
 import { storeAccessToken } from "../../../features/user/userSlice"
-import { welcomeScreens } from "../WelcomeScreens"
+import { WelcomeScreens } from "../WelcomeScreens"
 import { MainScreens } from "~Flow/main/MainScreens"
 import { hideScreenLoadingSpinner, showScreenLoadingSpinner } from "../../../features/screenLoading/screenLoadingSlice"
 import { RegisterUserRequest, LoginUserErrResponse, RegisterUserErrResponse, RegisterUserErrors, LoginUserErrors } from "@groupfitnessapp/common/src/api/requests/auth.types"
 import { RegexUtils } from "@groupfitnessapp/common/src/utils/RegexUtils";
 import { AuthUtils, TAllRegistrationFields, TRegistrationErrFields, TRegistrationFields } from "@groupfitnessapp/common/src/utils/AuthUtils";
 
-interface LoginScreenProps {
-    navigation: NativeStackNavigationProp<RootStackParamList, typeof Screens.Login>
-    route: RouteProp<RootStackParamList, typeof Screens.Login>
+interface LoginScreenProps extends ScreenProps<typeof Screens.Login> {
+
 }
 
 const LoginScreen = (props: LoginScreenProps) => {
@@ -36,7 +35,7 @@ const LoginScreen = (props: LoginScreenProps) => {
     }
 
     const navigateToDash = (userId: string) => {
-        props.navigation.navigate(welcomeScreens.MainFlow, { 
+        props.navigation.navigate(WelcomeScreens.MainFlow, { 
             screen: MainScreens.UserDashboard,
             params: { userId }
         })
@@ -79,7 +78,7 @@ interface ILoginForm {
 const LoginForm: React.FC<ILoginForm> = ({ showRegistrationForm, storeTokens, setErrMsg }) => {
     const dispatch = useAppDispatch();
 
-    const [formValues, onInputChange] = useState({ email: "", password: "" });
+    const [formValues, onInputChange] = useState({ email: "email@email.com", password: "Password321" });
 
     useEffect(() => {
         // hide any warning message when user begins typing
@@ -135,12 +134,12 @@ const RegistrationForm: React.FC<IRegistrationForm> = ({ showLoginForm, storeTok
     const [errField, setErrField] = useState<TRegistrationErrFields | null>(null)
 
     const [formValues, onInputChange] = useState<TAllRegistrationFields>({
-        email: "emai@email.com",
-        password: "Password321",
-        passwordReEnter: "Password321",
-        fullName: "Brandon Phillips",
-        username: "brp32",
-        phone: "4066716723",
+        email: "",
+        password: "",
+        passwordReEnter: "",
+        fullName: "",
+        username: "",
+        phone: "",
     });
 
     useEffect(() => {
