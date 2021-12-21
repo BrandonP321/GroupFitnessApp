@@ -1,5 +1,4 @@
 import { IUserShallowResponse } from "@groupfitnessapp/common/src/api/models/User.model";
-import axios from "axios";
 import { TRegistrationFields } from "../../utils/AuthUtils";
 import { RequestErrors } from "./RequestErrors";
 import { ClientErrorStatusCodes, ServerErrorStatusCodes } from "./statusCodes";

@@ -1,4 +1,4 @@
-import type { Model, Document, Schema, Query, ModelProperties } from "mongoose";
+import mongoose, { Model, Document, Schema, Query, ModelProperties, Mongoose } from "mongoose";
 import type { IBaseModelProperties } from ".";
 import type { Response } from "express";
 
@@ -8,9 +8,10 @@ export interface IUser extends IBaseModelProperties {
     password: string;
     fullName: string;
     username: string;
-    phone: string
+    phone: string;
     /* random hash used to enforce refresh jwt's only being used once */
     jwtHash: string;
+    chats: mongoose.Types.ObjectId[];
 }
 
 /* instance methods of User Model */

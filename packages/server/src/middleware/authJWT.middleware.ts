@@ -1,14 +1,15 @@
-import { MiddlewareUtils } from "../utils/MiddlewareUtils";
-import { JWTUtils } from "../utils/JWTUtils";
+import { MiddlewareUtils } from "~Utils/MiddlewareUtils";
+import { JWTUtils } from "~Utils/JWTUtils";
+import { RouteMiddleware } from ".";
 
 // other properties that will exist in Request object
-export interface IAuthJWTReqProps {
+export interface IAuthJWTResLocals {
     user: {
-        id?: string;
+        id: string;
     }
 }
 
-export const authenticateJWT: ((req: any, res: any, next: any) => any) = MiddlewareUtils.createMiddlewareFunc<any, IAuthJWTReqProps>((req, res, next) => {
+export const authenticateJWT: RouteMiddleware<{ UrlParams: {}, ReqBody: {}, ResBody: {} }, IAuthJWTResLocals> = (req, res, next) => {
     const token = JWTUtils.getTokenFromHeader(req);
 
     if (token) {
@@ -17,11 +18,11 @@ export const authenticateJWT: ((req: any, res: any, next: any) => any) = Middlew
         if (status) {
             // if jwt is expired, alert client so it can attempt to refresh the token
             return res.status(status).end();
-        } else if (!vToken) {
+        } else if (!vToken || !userId) {
             // if token is undefined, there is no token (and no user id from the token), so user needs to re-auth to generate new tokens
             return res.status(401).end();
         } else {
-            req.user = { id: userId };
+            res.locals.user = { id: userId };
 
             next();
         }
@@ -29,4 +30,4 @@ export const authenticateJWT: ((req: any, res: any, next: any) => any) = Middlew
     } else {
         return res.status(401).end();
     }
-})
+}

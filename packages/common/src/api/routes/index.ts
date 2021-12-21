@@ -9,9 +9,14 @@ const UserRoutes = {
     GetUser: "/api/user/:id"
 }
 
+const ChatRoutes = {
+    createNewChat: "/api/chat/create"
+}
+
 export const Routes = {
     ...AuthRoutes,
-    ...UserRoutes
+    ...UserRoutes,
+    ...ChatRoutes,
 }
 
 export type ValidRoute = keyof typeof Routes;

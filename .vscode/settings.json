@@ -19,5 +19,10 @@
     "editor.foldingImportsByDefault": true,
     "autofold.types": [
         { "ext": ".types.ts", "level": 1 }
-    ]
+    ],
+    // updates both html tags at once
+    "editor.linkedEditing": true,
+    "editor.minimap.enabled": false,
+    "files.autoSave": "onFocusChange",
+    "editor.tabSize": 4
 }

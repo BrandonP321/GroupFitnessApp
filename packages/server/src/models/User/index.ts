@@ -3,7 +3,7 @@ import bcrypt from "bcrypt";
 import { RegexUtils } from "@groupfitnessapp/common/src/utils";
 import type { IUser, IUserDocument, IUserModel } from "@groupfitnessapp/common/src/api/models/User.model";
 import { generateAccessToken, generateRefreshToken, handleUserDocSaveErr, toFullUserJSON, toShallowUserJSON, validatePassword } from "./UserMethods";
-import { ValidErrRes } from "utils/ControllerUtils";
+import { ValidErrRes } from "~Utils/ControllerUtils";
 import { RegisterUserErrors, RegisterUserErrResponse } from "@groupfitnessapp/common/src/api/requests/auth.types";
 
 const { Schema } = mongoose;
@@ -35,7 +35,8 @@ const UserSchema: ISchema<IUserDocument, IUserModel, IUserDocument> = new Schema
     phone: {
         type: String
     },
-    jwtHash: String
+    jwtHash: String,
+    chats: [ mongoose.Types.ObjectId ]
 }, { timestamps: true })
 
 
