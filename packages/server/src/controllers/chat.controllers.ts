@@ -90,5 +90,7 @@ export const CreateChatController: RouteController<CreateChatRequest, IAuthJWTRe
 }
 
 export const GetChatController: RouteController<GetChatRequest, IAuthJWTResLocals> = async (req, res) => {
-    console.log("getting chat", req.params.chatId)
+    const { params } = req;
+
+    // db
 }
