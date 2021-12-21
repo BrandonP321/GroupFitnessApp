@@ -1,5 +1,5 @@
 import { TAllChatCreationFields, TChatCreationFields } from "~Utils/ChatUtils";
-import { IChatJSONResponse, IShallowChatJSONResponse } from "../models/Chat.model";
+import { IFullChatJSONResponse, IShallowChatJSONResponse } from "../models/Chat.model";
 import { RequestErrors } from "./RequestErrors";
 import { ClientErrorStatusCodes, ServerErrorStatusCodes } from "./statusCodes";
 
@@ -44,3 +44,20 @@ export type ChatCreationErrResponse = {
         }
     }
 }
+
+export interface GetChatRequest {
+    UrlParams: {
+        chatId: string;
+    }
+    ReqBody: {
+
+    }
+    ResBody: {
+
+    } & IFullChatJSONResponse
+}
+
+export const GetChatErrors = {
+    InvalidChatId: RequestErrors.InvalidId,
+    UnexpectedCondition: RequestErrors.UnexpectedCondition
+} as const

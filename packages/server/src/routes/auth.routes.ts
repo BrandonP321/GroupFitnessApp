@@ -1,12 +1,12 @@
 import { LoginUserController, RefreshTokensController, RegisterUserController } from "~Controllers/auth.controllers";
-import { APIUtils } from "@groupfitnessapp/common/src/utils"
 import express from "express";
 import { authenticateJWT } from "~Middleware/authJWT.middleware";
+import { Routes } from "@groupfitnessapp/common/src/api/routes";
 
 const router = express.Router();
 
-router.post(APIUtils.getRouteString("RegisterUser"), RegisterUserController);
-router.post(APIUtils.getRouteString("LoginUser"), LoginUserController);
-router.post(APIUtils.getRouteString("RefreshTokens"), RefreshTokensController);
+router.post(Routes.RegisterUser(), RegisterUserController);
+router.post(Routes.LoginUser(), LoginUserController);
+router.post(Routes.RefreshTokens(), RefreshTokensController);
 
 export default router;

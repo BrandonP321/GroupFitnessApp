@@ -88,7 +88,7 @@ const LoginForm: React.FC<ILoginForm> = ({ showRegistrationForm, storeTokens, se
     const attemptLogin = () => {
         dispatch(showScreenLoadingSpinner());
 
-        LoginUser({}, formValues)
+        LoginUser(formValues)
             .then(({ data }) => {
                 // if login successful, store JSON web tokens and direct to dashboard
                 storeTokens(data.accessToken, data.refreshToken, data.id)
@@ -159,7 +159,7 @@ const RegistrationForm: React.FC<IRegistrationForm> = ({ showLoginForm, storeTok
 
         dispatch(showScreenLoadingSpinner());
 
-        RegisterUser({}, formValues)
+        RegisterUser(formValues)
             .then(({ data }) => {
                 storeTokens(data.accessToken, data.refreshToken, data.id);
             })

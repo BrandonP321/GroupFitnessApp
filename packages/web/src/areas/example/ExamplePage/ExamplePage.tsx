@@ -20,7 +20,7 @@ export default function ExamplePage(props: Props): ReactElement {
     const attemptLogin = () => {
         setIsLoading(true);
 
-        LoginUser({}, { email: "test@test.com", password: "pass" })
+        LoginUser({ email: "test@test.com", password: "pass" })
             .then(res => {
                 console.log(res);
             })

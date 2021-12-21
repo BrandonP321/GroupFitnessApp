@@ -1,10 +1,11 @@
-import { APIUtils } from "@groupfitnessapp/common/src/utils"
+import { Routes } from "@groupfitnessapp/common/src/api/routes";
 import express from "express";
-import { CreateChatController } from "~Controllers/chat.controllers";
+import { CreateChatController, GetChatController } from "~Controllers/chat.controllers";
 import { authenticateJWT } from "~Middleware/authJWT.middleware";
 
 const router = express.Router();
 
-router.post(APIUtils.getRouteString("createNewChat"), authenticateJWT, CreateChatController);
+router.post(Routes.createNewChat(), authenticateJWT, CreateChatController);
+router.get(Routes.getChat(), GetChatController)
 
 export default router;

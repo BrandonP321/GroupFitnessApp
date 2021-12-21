@@ -5,7 +5,7 @@ import bcrypt from "bcrypt";
 import { AuthUtils, ChatUtils, EnvUtils, EnvVars } from "@groupfitnessapp/common/src/utils";
 import { ClientErrorStatusCodes, ServerErrorStatusCodes } from "@groupfitnessapp/common/src/api/requests/statusCodes";
 import type { RouteController } from "./index";
-import { ChatCreationErrors, ChatCreationErrResponse, CreateChatRequest } from "@groupfitnessapp/common/src/api/requests/chat.types";
+import { ChatCreationErrors, ChatCreationErrResponse, CreateChatRequest, GetChatRequest } from "@groupfitnessapp/common/src/api/requests/chat.types";
 import { IChat, IShallowChatJSONResponse } from "@groupfitnessapp/common/src/api/models/Chat.model";
 import { IBaseModelProperties } from "@groupfitnessapp/common/src/api/models";
 import { IChatDocSaveErr } from "~Models/Chat/ChatMethods";
@@ -87,4 +87,8 @@ export const CreateChatController: RouteController<CreateChatRequest, IAuthJWTRe
             return res.json(chatJSON).end();
         })
     })
+}
+
+export const GetChatController: RouteController<GetChatRequest, IAuthJWTResLocals> = async (req, res) => {
+    console.log("getting chat", req.params.chatId)
 }

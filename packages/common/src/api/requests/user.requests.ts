@@ -15,11 +15,11 @@ export interface GetAllUsersRequest {
     }
 }
 
-function GetAllUsers (urlParams: GetAllUsersRequest["UrlParams"], bodyParams: GetAllUsersRequest["ReqBody"]): Promise<AxiosResponse<GetAllUsersRequest["ResBody"]>> {
-    const url = `${APIDomain}${APIUtils.getRouteString("GetAllUsers", urlParams)}`;
+// function GetAllUsers (urlParams: GetAllUsersRequest["UrlParams"], bodyParams: GetAllUsersRequest["ReqBody"]): Promise<AxiosResponse<GetAllUsersRequest["ResBody"]>> {
+    // const url = `${APIDomain}${APIUtils.getRouteString("GetAllUsers", urlParams)}`;
 
-    return axios.get(url, bodyParams);
-}
+    // return axios.get(url, bodyParams);
+// }
 
 export interface GetUserRequest {
     UrlParams: {
@@ -31,19 +31,14 @@ export interface GetUserRequest {
     }
 }
 
-function GetUser (urlParams: GetUserRequest["UrlParams"], bodyParams: GetUserRequest["ReqBody"]): Promise<AxiosResponse<GetUserRequest["ResBody"]>> {
-    const url = `${APIDomain}${APIUtils.getRouteString("GetUser", urlParams)}`;
+// function GetUser (urlParams: GetUserRequest["UrlParams"], bodyParams: GetUserRequest["ReqBody"]): Promise<AxiosResponse<GetUserRequest["ResBody"]>> {
+    // const url = `${APIDomain}${APIUtils.getRouteString("GetUser", urlParams)}`;
 
-    return axios.get(url, bodyParams);
-}
+    // return axios.get(url, bodyParams);
+// }
 
 // POST
 
 // PUT
 
 // DELETE
-
-export default {
-    GetAllUsers,
-    GetUser,
-}
