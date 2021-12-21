@@ -1,4 +1,4 @@
-import { GetAllUsersController, GetUserController } from "../controllers/user.controllers";
+import { GetAllUsersController, GetUserController } from "~Controllers/user.controllers";
 import { APIUtils } from "@groupfitnessapp/common/src/utils"
 import express from "express";
 
@@ -15,4 +15,4 @@ router.get(APIUtils.getRouteString("GetUser"), GetUserController);
 
 // DELETE
 
-module.exports = router;
+export default router;

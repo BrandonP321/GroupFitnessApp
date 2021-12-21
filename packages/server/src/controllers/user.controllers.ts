@@ -1,8 +1,7 @@
-import { ControllerUtils } from "../utils/ControllerUtils";
 import { GetAllUsersRequest, GetUserRequest } from "@groupfitnessapp/common/src/api/requests/user.requests";
-import db from "../models";
+import db from "~Models";
 import { HandleControllerErr } from "./errorHandlers/HandleControllerErr";
-import { RouteController } from "./index";
+import { RouteController } from "~Controllers";
 
 // GET
 

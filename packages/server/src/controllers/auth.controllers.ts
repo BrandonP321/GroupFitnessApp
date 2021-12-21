@@ -1,15 +1,15 @@
-import { ControllerUtils } from "../utils/ControllerUtils";
+import { ControllerUtils } from "~Utils/ControllerUtils";
 import { LoginUserErrors, LoginUserErrResponse, LoginUserRequest, RefreshTokensRequest, RegisterUserErrors, RegisterUserErrResponse, RegisterUserRequest } from "@groupfitnessapp/common/src/api/requests/auth.types";
 import { HandleControllerErr } from "./errorHandlers/HandleControllerErr";
-import db from "../models"
+import db from "~Models"
 import { CallbackError, NativeError } from "mongoose";
 import { IUser, IUserDocument } from "@groupfitnessapp/common/src/api/models/User.model";
-import { JWTUtils } from "../utils/JWTUtils";
+import { JWTUtils } from "~Utils/JWTUtils";
 import { RouteController } from "./index";
 import bcrypt from "bcrypt";
 import { AuthUtils, EnvUtils, EnvVars } from "@groupfitnessapp/common/src/utils";
 import { ClientErrorStatusCodes, ServerErrorStatusCodes } from "@groupfitnessapp/common/src/api/requests/statusCodes";
-import { IUserDocSaveErr } from "models/User/UserMethods";
+import { IUserDocSaveErr } from "~Models/User/UserMethods";
 
 const SECRET = EnvUtils.getEnvVar(EnvVars.SECRET, "");
 
@@ -162,7 +162,7 @@ const generateRandomHash = async () => {
 }
 
 const generateTokens = async (user: IUserDocument, hash: string) => {
-    const accessToken = user.generateAccessToken(hash, "10000");
+    const accessToken = user.generateAccessToken(hash, "10000000");
     const refreshToken = user.generateRefreshToken(hash);
 
     return { accessToken, refreshToken }

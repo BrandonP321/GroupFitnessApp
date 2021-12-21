@@ -1,8 +1,8 @@
 import { IUserDocument, IUserModel, TGenerateAccessToken, TGenerateRefreshToken, TToFullUserJSON, TToShallowUserJSON, TValidatePassword } from "@groupfitnessapp/common/src/api/models/User.model";
 import { RegisterUserErrors, RegisterUserErrResponse } from "@groupfitnessapp/common/src/api/requests/auth.types";
 import bcrypt from "bcrypt";
-import { ValidErrRes } from "utils/ControllerUtils";
-import { JWTUtils } from "../../utils/JWTUtils";
+import { ValidErrRes } from "~Utils/ControllerUtils";
+import { JWTUtils } from "~Utils/JWTUtils";
 import mongoose from "mongoose";
 
 /**
