@@ -2,7 +2,7 @@ import { ControllerUtils } from "~Utils/ControllerUtils";
 import { LoginUserErrors, LoginUserErrResponse, LoginUserRequest, RefreshTokensRequest, RegisterUserErrors, RegisterUserErrResponse, RegisterUserRequest } from "@groupfitnessapp/common/src/api/requests/auth.types";
 import { HandleControllerErr } from "./errorHandlers/HandleControllerErr";
 import db from "~Models"
-import { CallbackError, NativeError } from "mongoose";
+import mongoose, { CallbackError, Mongoose, NativeError } from "mongoose";
 import { IUser, IUserDocument } from "@groupfitnessapp/common/src/api/models/User.model";
 import { JWTUtils } from "~Utils/JWTUtils";
 import { RouteController } from "./index";
@@ -10,6 +10,9 @@ import bcrypt from "bcrypt";
 import { AuthUtils, EnvUtils, EnvVars } from "@groupfitnessapp/common/src/utils";
 import { ClientErrorStatusCodes, ServerErrorStatusCodes } from "@groupfitnessapp/common/src/api/requests/statusCodes";
 import { IUserDocSaveErr } from "~Models/User/UserMethods";
+import { haveUserReAuth } from "~Middleware/authJWT.middleware";
+import { ConfigUtils } from "@groupfitnessapp/common/src/utils/ConfigUtils"
+import { MasterConfig } from "@groupfitnessapp/common/src/config"
 
 const SECRET = EnvUtils.getEnvVar(EnvVars.SECRET, "");
 
@@ -76,7 +79,7 @@ export const LoginUserController: RouteController<LoginUserRequest, {}> = async 
     // hash that will be used to enforce that a refresh token is only used once
     const newTokenHash = await generateRandomHash();
 
-    db.User.findOneAndUpdate({ email }, { $set: { jwtHash: newTokenHash } }, async (err: NativeError, user: IUserDocument) => {
+    db.User.findOneAndUpdate({ email }, { $set: { jwtHash: newTokenHash } }, async (err: NativeError, user: IUserDocument | null) => {
         if (err) {
             // status 500 if any error occurred while finding the user's collection, not including if it wasn't found
             return ControllerUtils.respondWithUnexpectedErr(res);
@@ -113,47 +116,53 @@ export const LoginUserController: RouteController<LoginUserRequest, {}> = async 
     })
 }
 
+/* Refreshes access and refresh tokens */
 export const RefreshTokensController: RouteController<RefreshTokensRequest, {}> = async (req, res) => {
     const refreshToken = JWTUtils.getTokenFromHeader(req);
-    const { status, userId, jwtHash } = JWTUtils.verifyRefreshToken(refreshToken ?? null);
+    const token = JWTUtils.verifyRefreshToken(refreshToken ?? null);
 
-    if (!refreshToken || !userId) {
-        return res.status(401).end();
-    } else if (status) {
-        return res.status(status).end();
+    // if either the refresh token wasn't in the req header or any data on the token couldn't be verified, have user reauth
+    if (!token || token.isExpired || !token.userId || !token.jwtHash || !refreshToken) {
+        return haveUserReAuth(res);
     }
 
-    db.User.findById(userId, async (err: NativeError, user: IUserDocument) => {
-        if (err) {
-            console.error(err);
-            return HandleControllerErr(err, res);
+    let userId: mongoose.Types.ObjectId;
+
+    try {
+        userId = new mongoose.Types.ObjectId(token.userId);
+    } catch (err) {
+        return haveUserReAuth(res);
+    }
+
+    db.User.findById(token.userId, async (err: NativeError, user: IUserDocument | null) => {
+        if (err || !user) {
+            return haveUserReAuth(res);
         }
 
-        // if refreh token's hash matches hash in db, allow tokens to be refreshed
-        if (user.jwtHash === jwtHash) {
-            // hash that will be used to enforce that a refresh token is only used once
-            const newTokenHash = await generateRandomHash();
-
-            db.User.updateOne({ _id: userId }, { $set: { jwtHash: newTokenHash } }, async (err: NativeError, data: any) => {
-                if (err) {
-                    return HandleControllerErr(err, res);
-                }
-
-                const newAccessToken = user.generateAccessToken(newTokenHash, "10000");
-                const newRefreshToken = user.generateRefreshToken(newTokenHash);
-
-                if (!newAccessToken || !newRefreshToken) {
-                    return res.status(500).end();
-                }
-
-                res.json({
-                    accessToken: newAccessToken,
-                    refreshToken: newRefreshToken
-                }).end()
-            })
-        } else {
-            return res.status(401).end();
+        // if refreh token hash doesn't match has in db, is not appropriate refresh token
+        if (user.jwtHash && user.jwtHash !== token.jwtHash) {
+            return haveUserReAuth(res);
         }
+
+        // hash that will be used to enforce that a refresh token is only used once
+        const newTokenHash = await generateRandomHash();
+
+        db.User.updateOne({ _id: token.userId }, { $set: { jwtHash: newTokenHash } }, async (err: NativeError, data: any) => {
+            if (err) {
+                return haveUserReAuth(res);
+            }
+
+            const { accessToken, refreshToken } = await generateTokens(user, newTokenHash);
+
+            if (!accessToken || !refreshToken) {
+                return haveUserReAuth(res);
+            }
+
+            res.json({
+                accessToken,
+                refreshToken
+            }).end()
+        })
     })
 }
 
@@ -161,8 +170,10 @@ const generateRandomHash = async () => {
     return await bcrypt.hash(SECRET, 10)
 }
 
+const JWTExpirationTime = ConfigUtils.getParam(MasterConfig.JWTSettings.AccessTokenExpirationTime, "1000")
+
 const generateTokens = async (user: IUserDocument, hash: string) => {
-    const accessToken = user.generateAccessToken(hash, "10000000");
+    const accessToken = user.generateAccessToken(hash, JWTExpirationTime);
     const refreshToken = user.generateRefreshToken(hash);
 
     return { accessToken, refreshToken }

@@ -12,6 +12,8 @@ interface IConfigSystem {
 
 export class ConfigUtils {
     /* returns param value or default value if param is disabled */
+    public static getParam(param: IConfigParam, defaultValue: string): string;
+    public static getParam(param: IConfigParam, defaultValue: ValidConfigValue): ValidConfigValue;
     public static getParam(param: IConfigParam, defaultValue: ValidConfigValue): ValidConfigValue {
         return param?.enabled ? param?.value : defaultValue;
     }
