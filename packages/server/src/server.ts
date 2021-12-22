@@ -1,13 +1,16 @@
-import express from "express";
-import { createServer } from "http"
 import dotenv from "dotenv";
-import { configureRoutes } from "./routes";
 import { EnvUtils, EnvVars } from "@groupfitnessapp/common/src/utils";
+import express from "express";
+
+// .env must be configured before importing other modules that use .env
+dotenv.config({ path: EnvUtils.getEnvFilePath() ?? "../.env" });
+
+import { createServer } from "http"
 import { connectToMongoDb } from "~Models";
 import { configureApp } from "~Middleware/appConfiguration.middleware";
 import { configureSocket } from "~Middleware/configureSocket";
+import { configureRoutes } from "./routes";
 
-dotenv.config({ path: EnvUtils.getEnvFilePath() ?? "../.env" });
 const PORT = EnvUtils.getEnvVar(EnvVars.PORT, "8000");
 
 export const app = express();

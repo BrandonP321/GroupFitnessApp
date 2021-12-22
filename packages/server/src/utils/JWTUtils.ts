@@ -3,13 +3,15 @@ import jwt from "jsonwebtoken";
 import { EnvUtils, EnvVars } from "@groupfitnessapp/common/src/utils";
 import type { Request, Response } from "express";
 
-interface IVerifiedTokenResponse {
-    status?: number;
-    isExpired?: boolean;
-    token?: jwt.JwtPayload;
-    userId?: string;
-    jwtHash?: string;
-}
+type IVerifiedTokenResponse = ({
+    userId: string;
+    jwtHash: string;
+} & ({
+    isExpired: true;
+} | {
+    isExpired: false;
+    token: jwt.JwtPayload;
+})) | undefined
 
 export class JWTUtils {
     private static signToken(userId: string, isRefreshToken: boolean, hash: string, expiresIn?: string) {
@@ -44,33 +46,36 @@ export class JWTUtils {
 
     private static verifyToken(token: string | null, secret: string | undefined): IVerifiedTokenResponse {
         if (!secret || !token) {
-            console.error("Error getting SECRET Env Variable");
-            // TODO: update status code
-            return { status: 400 }
-        } 
-        else if (!token) {
-            console.error("Refresh token could not be found");
-            // TODO: update status code
-            return { status: 400 }
+            console.error("Error getting SECRET Env Variable or refresh token not found");
+            return undefined
         }
 
         try {
             const verifiedToken = jwt.verify(token, secret)
             const tokenIsString = typeof verifiedToken === "string";
 
+            if (tokenIsString || !verifiedToken.sub || !verifiedToken.jti) {
+                return undefined;
+            }
+
             return {
-                token: !tokenIsString ? verifiedToken : undefined,
+                token: verifiedToken,
                 isExpired: false,
-                userId: !tokenIsString ? verifiedToken.sub : undefined,
-                jwtHash: !tokenIsString ? verifiedToken.jti : undefined
+                userId: verifiedToken.sub,
+                jwtHash: verifiedToken.jti
             }
         } catch (err) {
             // error will be thrown if token is expired
             const decodedToken = jwt.decode(token);
 
+            if (typeof decodedToken === "string" || !decodedToken || !decodedToken.sub || !decodedToken.jti) {
+                return undefined;
+            }
+
             return { 
                 isExpired: true, 
-                userId: typeof decodedToken?.sub === "string" ? decodedToken.sub : undefined
+                userId: decodedToken.sub,
+                jwtHash: decodedToken.jti
             };
         }
     }
@@ -93,8 +98,7 @@ export class JWTUtils {
 
     public static getTokenFromHeader(req: Request<any>) {
         const token = req.headers.authorization?.split(" ")[1];
+
         return token;
     }
-
-    // public static verifyRefreshToken
 }

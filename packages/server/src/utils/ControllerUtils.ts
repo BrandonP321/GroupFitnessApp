@@ -15,7 +15,7 @@ export class ControllerUtils {
         try {
             res.status(errObj.status).json(errObj.data).end();
         } catch (err) {
-            res.status(500).end();
+            res.status(ServerErrorStatusCodes.InternalServerError).end();
         }
     }
 

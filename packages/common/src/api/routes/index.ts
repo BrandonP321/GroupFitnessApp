@@ -14,9 +14,7 @@ const AuthRoutes = {
 
 const UserRoutes = {
     GetAllUsers: () => "/api/user/all",
-    GetUser: (params?: GetUserRequest["UrlParams"]) => `/api/user/${params?.id ?? ":id"}`,
-    // GetAllUsers: "/api/user/all",
-    // GetUser: "/api/user/:id",
+    GetUser: (params?: GetUserRequest["UrlParams"]) => `/api/user/${params?.id ?? ":id"}`
 }
 
 const ChatRoutes = {
