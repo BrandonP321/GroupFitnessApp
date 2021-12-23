@@ -9,6 +9,7 @@ import { IChat, IChatDocument, IChatModel, IFullChatJSONResponse, IShallowChatJS
 import { IBaseModelProperties } from "@groupfitnessapp/common/src/api/models";
 import { IChatDocSaveErr } from "~Models/Chat/ChatMethods";
 import { IAuthJWTResLocals } from "~Middleware/authJWT.middleware";
+import { MongooseUtils } from "~Utils/MongooseUtils";
 
 interface DBUpdateResponse {
     acknowledged: boolean;
@@ -88,11 +89,9 @@ export const CreateChatController: RouteController<CreateChatRequest, IAuthJWTRe
 export const GetChatController: RouteController<GetChatRequest, IAuthJWTResLocals> = async (req, res) => {
     const { params } = req;
 
-    let chatId: mongoose.Types.ObjectId;
+    let chatId = MongooseUtils.idStringToMongooseId(params.chatId);
 
-    try {
-        chatId = new mongoose.Types.ObjectId(params.chatId);
-    } catch (err) {
+    if (!chatId) {
         return ControllerUtils.respondWithErr<GetChatErrResponse>({
             status: ClientErrorStatusCodes.Unauthorized,
             data: {
@@ -108,10 +107,8 @@ export const GetChatController: RouteController<GetChatRequest, IAuthJWTResLocal
             return res.status(500).end();
         }
 
-        let isUserPartOfChat: mongoose.Types.ObjectId | undefined;
-
         // verify that the user requesting the chat data is a part of the chat
-        isUserPartOfChat = chat.users.find(u => u.toString() === res.locals.user.id.toString())
+        const isUserPartOfChat = await chat.verifyAuthUserIsInChat(res.locals.user?.id)
 
         if (!isUserPartOfChat) {
             return ControllerUtils.respondWithErr<GetChatErrResponse>({
@@ -137,3 +134,7 @@ export const GetChatController: RouteController<GetChatRequest, IAuthJWTResLocal
         res.json(chatJSON).end();
     })
 }
+
+// export const AddUserToChatController: RouteController = async (req, res) => {
+
+// }

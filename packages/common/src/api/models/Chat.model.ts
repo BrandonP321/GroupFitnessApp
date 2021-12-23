@@ -22,6 +22,7 @@ export interface IChatMethods {
     toFullChatJSONResponse: TToFullChatJSONResponse
     toShallowChatJSONResponse: TToShallowChatJSONResponse;
     populateUsers: TPopulateChatUsers;
+    verifyAuthUserIsInChat: TVerifyAuthUserIsInChat;
 }
 
 export type IChatDocument = mongoose.Document & IChatMethods & IChat;
@@ -47,5 +48,6 @@ export interface IFullChatJSONResponse extends Omit<IChat, "_id" | "users"> {
 export type TToFullChatJSONResponse = () => Promise<IFullChatJSONResponse>;
 export type TToShallowChatJSONResponse = () => Promise<IShallowChatJSONResponse>;
 export type TPopulateChatUsers = () => Promise<void>;
+export type TVerifyAuthUserIsInChat = (userId: mongoose.Types.ObjectId) => Promise<boolean>;
 
 // STATIC METHODS

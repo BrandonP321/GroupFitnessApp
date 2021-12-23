@@ -1,4 +1,4 @@
-import { IChatDocument, IChatModel, TPopulateChatUsers, TToFullChatJSONResponse, TToShallowChatJSONResponse } from "@groupfitnessapp/common/src/api/models/Chat.model";
+import { IChatDocument, IChatModel, TPopulateChatUsers, TToFullChatJSONResponse, TToShallowChatJSONResponse, TVerifyAuthUserIsInChat } from "@groupfitnessapp/common/src/api/models/Chat.model";
 import { IUserModel, IUserShallowResponse } from "@groupfitnessapp/common/src/api/models/User.model";
 import { ChatCreationErrResponse } from "@groupfitnessapp/common/src/api/requests/chat.types";
 import { ValidErrRes } from "~Utils/ControllerUtils";
@@ -54,4 +54,14 @@ export const trimPopulatedUsers = async function(users: IUserModel[]) {
     const populatedUsers = await Promise.all(users.map(u => u?.toShallowUserJSON()));
 
     return populatedUsers;
+}
+
+export const verifyAuthUserIsInChat: TVerifyAuthUserIsInChat = async function(this: IChatDocument, userId: mongoose.Types.ObjectId) {
+    try {
+        const foundUserId = this.users?.find(u => u.toString() === userId.toString());
+    
+        return !!foundUserId;
+    } catch (err) {
+        return false
+    }
 }
