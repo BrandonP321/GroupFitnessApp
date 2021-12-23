@@ -17,17 +17,14 @@
 		"body": [
 			"import React from \"react\";",
 			"import { View } from \"react-native\";",
-			"import { RouteProp } from \"@react-navigation/native\";",
-			"import { NativeStackNavigationProp } from \"@react-navigation/native-stack\";",
-			"import { RootStackParamList, screens } from \"~Navigation/Navigation\";",
+			"import { ScreenProps, Screens } from \"~Navigation/Screens\";",
 			"import styles from \"./${TM_FILENAME_BASE}.style\";\n",
-			"export type ${TM_FILENAME_BASE}ScreenParamList = {\n}\n",
-			"interface ${TM_FILENAME_BASE}ScreenProps {",
-			"\tnavigation: NativeStackNavigationProp<RootStackParamList, typeof screens.$1>",
-			"\troute: RouteProp<RootStackParamList, typeof screens.$1>",
+			"export type ${TM_FILENAME_BASE}ParamList = {\n}\n",
+			"interface ${TM_FILENAME_BASE}Props extends ScreenProps<(typeof Screens.$1)> {",
+			"\t",
 			"}\n",
-			"const ${TM_FILENAME_BASE}Screen = (props: ${TM_FILENAME_BASE}ScreenProps) => {\n\treturn (\n\t\t<View/>\n\t)\n}\n",
-			"export default ${TM_FILENAME_BASE}Screen"
+			"const ${TM_FILENAME_BASE} = (props: ${TM_FILENAME_BASE}Props) => {\n\treturn (\n\t\t<View/>\n\t)\n}\n",
+			"export default ${TM_FILENAME_BASE}"
 		]
 	},
 	"react native component boiler plate": {
