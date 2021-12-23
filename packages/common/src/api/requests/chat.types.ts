@@ -1,4 +1,5 @@
 import { TAllChatCreationFields, TChatCreationFields } from "~Utils/ChatUtils";
+import { ProtectedRouteErrors, UnexpectedConditionErr } from ".";
 import { IFullChatJSONResponse, IShallowChatJSONResponse } from "../models/Chat.model";
 import { RequestErrors } from "./RequestErrors";
 import { ClientErrorStatusCodes, ServerErrorStatusCodes } from "./statusCodes";
@@ -39,9 +40,7 @@ export type ChatCreationErrResponse = {
             error: typeof ChatCreationErrors.InvalidUserIds,
             allIds: string[];
             errMsg: string;
-        } | {
-            error: typeof ChatCreationErrors.UnexpectedCondition
-        }
+        } | ProtectedRouteErrors
     }
 }
 
@@ -59,5 +58,19 @@ export interface GetChatRequest {
 
 export const GetChatErrors = {
     InvalidChatId: RequestErrors.InvalidId,
+    UserNotPartOfChat: RequestErrors.InvalidUserCredentials,
     UnexpectedCondition: RequestErrors.UnexpectedCondition
 } as const
+
+export type GetChatErrResponse = {
+    response: {
+        status: ClientErrorStatusCodes | ServerErrorStatusCodes;
+        data: {
+            error: typeof GetChatErrors.InvalidChatId
+            errMsg: string;
+        } | {
+            error: typeof GetChatErrors.UserNotPartOfChat;
+            errMsg: string;
+        } | ProtectedRouteErrors
+    }
+}

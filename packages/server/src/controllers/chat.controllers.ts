@@ -1,17 +1,14 @@
 import { ControllerUtils } from "~Utils/ControllerUtils";
 import db from "~Models"
-import mongoose, { CallbackError, NativeError, ObjectId } from "mongoose";
-import bcrypt from "bcrypt";
-import { AuthUtils, ChatUtils, EnvUtils, EnvVars } from "@groupfitnessapp/common/src/utils";
-import { ClientErrorStatusCodes, ServerErrorStatusCodes } from "@groupfitnessapp/common/src/api/requests/statusCodes";
+import mongoose, { CallbackError } from "mongoose";
+import { ChatUtils, EnvUtils, EnvVars } from "@groupfitnessapp/common/src/utils";
+import { ClientErrorStatusCodes } from "@groupfitnessapp/common/src/api/requests/statusCodes";
 import type { RouteController } from "./index";
-import { ChatCreationErrors, ChatCreationErrResponse, CreateChatRequest, GetChatRequest } from "@groupfitnessapp/common/src/api/requests/chat.types";
-import { IChat, IShallowChatJSONResponse } from "@groupfitnessapp/common/src/api/models/Chat.model";
+import { ChatCreationErrors, ChatCreationErrResponse, CreateChatRequest, GetChatErrors, GetChatErrResponse, GetChatRequest } from "@groupfitnessapp/common/src/api/requests/chat.types";
+import { IChat, IChatDocument, IChatModel, IFullChatJSONResponse, IShallowChatJSONResponse, TToFullChatJSONResponse } from "@groupfitnessapp/common/src/api/models/Chat.model";
 import { IBaseModelProperties } from "@groupfitnessapp/common/src/api/models";
 import { IChatDocSaveErr } from "~Models/Chat/ChatMethods";
 import { IAuthJWTResLocals } from "~Middleware/authJWT.middleware";
-
-const SECRET = EnvUtils.getEnvVar(EnvVars.SECRET, "");
 
 interface DBUpdateResponse {
     acknowledged: boolean;
@@ -47,7 +44,7 @@ export const CreateChatController: RouteController<CreateChatRequest, IAuthJWTRe
             status: ClientErrorStatusCodes.Conflict,
             data: { 
                 error: ChatCreationErrors.InvalidUserIds, 
-                allIds: [...req.body.usersToAdd, res.locals.user.id],
+                allIds: [...req.body.usersToAdd, res.locals.user.id.toString()],
                 errMsg: "One or more user Id's provided for chat creation were invalid"
             }
         }, res)
@@ -65,15 +62,14 @@ export const CreateChatController: RouteController<CreateChatRequest, IAuthJWTRe
         // add chat to list of chats for each user
         db.User.updateMany({ _id: { $in: chatDoc.users } }, { $push: { chats: chat._id } }, async (err: any, data: DBUpdateResponse) => {
             if (err) {
+                // TODO: more error handling?
                 console.log(err);
                 // not sure what kid of errors would come up so using a general 500 status response for now
                 return ControllerUtils.respondWithUnexpectedErr(res);
             }
 
             // populate user id's in arr of users in this chat
-            await chat.populate({
-                path: "users",
-            })
+            await chat.populateUsers();
 
             let chatJSON: IShallowChatJSONResponse;
 
@@ -92,5 +88,52 @@ export const CreateChatController: RouteController<CreateChatRequest, IAuthJWTRe
 export const GetChatController: RouteController<GetChatRequest, IAuthJWTResLocals> = async (req, res) => {
     const { params } = req;
 
-    // db
+    let chatId: mongoose.Types.ObjectId;
+
+    try {
+        chatId = new mongoose.Types.ObjectId(params.chatId);
+    } catch (err) {
+        return ControllerUtils.respondWithErr<GetChatErrResponse>({
+            status: ClientErrorStatusCodes.Unauthorized,
+            data: {
+                error: GetChatErrors.InvalidChatId,
+                errMsg: "The chat id provided was invalid."
+            }
+        }, res)
+    }
+
+    db.Chat.findById(chatId, async (err: any, chat: IChatDocument) => {
+        if (err) {
+            console.log(err);
+            return res.status(500).end();
+        }
+
+        let isUserPartOfChat: mongoose.Types.ObjectId | undefined;
+
+        // verify that the user requesting the chat data is a part of the chat
+        isUserPartOfChat = chat.users.find(u => u.toString() === res.locals.user.id.toString())
+
+        if (!isUserPartOfChat) {
+            return ControllerUtils.respondWithErr<GetChatErrResponse>({
+                status: ClientErrorStatusCodes.Forbidden,
+                data: {
+                    error: GetChatErrors.UserNotPartOfChat,
+                    errMsg: "User Requesting data on chat is not a user within that chat"
+                }
+            }, res)
+        }
+
+        await chat.populateUsers();
+
+        let chatJSON: IFullChatJSONResponse;
+
+        try {
+            chatJSON = await chat.toFullChatJSONResponse();
+        } catch (err) {
+            console.log(err);
+            return res.status(500).end();
+        }
+
+        res.json(chatJSON).end();
+    })
 }

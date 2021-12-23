@@ -1,4 +1,4 @@
-import mongoose, { Model, ModelProperties, ObjectId } from "mongoose";
+import mongoose, { Model, ModelProperties, Mongoose, ObjectId } from "mongoose";
 import type { IBaseModelProperties } from ".";
 import { IUserShallowResponse } from "./User.model";
 
@@ -18,14 +18,15 @@ export interface IChat extends IBaseModelProperties {
 }
 
 /* instance methods on Chat Model */
-export interface IChatDocument extends IChat {
-    toResponseJSON: TToChatJSONResponse
+export interface IChatMethods {
+    toFullChatJSONResponse: TToFullChatJSONResponse
     toShallowChatJSONResponse: TToShallowChatJSONResponse;
+    populateUsers: TPopulateChatUsers;
 }
 
-/* static methods on Chat Schema */
-export interface IChatModel extends Model<IChatDocument, {}, IChatDocument>, IChatDocument, IChat, ModelProperties {
-}
+export type IChatDocument = mongoose.Document & IChatMethods & IChat;
+
+export type IChatModel = Model<IChatDocument, {}, IChatMethods> & IChatDocument & IChat & ModelProperties;
 
 export interface IShallowChatJSONResponse {
     id: string;
@@ -35,15 +36,16 @@ export interface IShallowChatJSONResponse {
     users: IUserShallowResponse[];
 }
 
-/* basic info  */
-export interface IChatJSONResponse extends Omit<IChat, "_id"> {
+export interface IFullChatJSONResponse extends Omit<IChat, "_id" | "users"> {
     id: string;
+    users: IUserShallowResponse[];
 }
 
 
 // INSTANCE METHODS
 
-export type TToChatJSONResponse = () => Promise<IChatJSONResponse>;
+export type TToFullChatJSONResponse = () => Promise<IFullChatJSONResponse>;
 export type TToShallowChatJSONResponse = () => Promise<IShallowChatJSONResponse>;
+export type TPopulateChatUsers = () => Promise<void>;
 
 // STATIC METHODS

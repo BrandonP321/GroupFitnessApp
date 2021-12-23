@@ -1,6 +1,6 @@
 import mongoose, { NativeError, Schema as ISchema, Model, Mongoose, Error, ErrorHandlingMiddlewareFunction } from "mongoose";
-import type { IChatDocument, IChatModel } from "@groupfitnessapp/common/src/api/models/Chat.model";
-import { handleChatDocSaveErr, toShallowChatJSONResponse } from "./ChatMethods";
+import type { IChatDocument, IChatMethods, IChatModel } from "@groupfitnessapp/common/src/api/models/Chat.model";
+import { handleChatDocSaveErr, toShallowChatJSONResponse, populateUsers, toFullChatJSONResponse } from "./ChatMethods";
 
 const { Schema } = mongoose;
 
@@ -31,9 +31,13 @@ const ChatSchema: ISchema<IChatDocument, IChatModel, IChatDocument> = new Schema
 /* handles any errors when new User document can't be created */
 ChatSchema.post("save", handleChatDocSaveErr);
 
-ChatSchema.methods = {
+const chatMethods: typeof ChatSchema.methods & IChatMethods = {
     ...ChatSchema.methods,
-    toShallowChatJSONResponse
-};
+    toShallowChatJSONResponse,
+    toFullChatJSONResponse,
+    populateUsers
+}
+
+ChatSchema.methods = chatMethods
 
 export const Chat = mongoose.model<IChatDocument, IChatModel>("Chat", ChatSchema)
