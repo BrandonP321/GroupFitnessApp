@@ -45,8 +45,8 @@ export interface IFullChatJSONResponse extends Omit<IChat, "_id" | "users"> {
 
 // INSTANCE METHODS
 
-export type TToFullChatJSONResponse = () => Promise<IFullChatJSONResponse>;
-export type TToShallowChatJSONResponse = () => Promise<IShallowChatJSONResponse>;
+export type TToFullChatJSONResponse = () => Promise<IFullChatJSONResponse | undefined>;
+export type TToShallowChatJSONResponse = () => Promise<IShallowChatJSONResponse | undefined>;
 export type TPopulateChatUsers = () => Promise<void>;
 export type TVerifyAuthUserIsInChat = (userId: mongoose.Types.ObjectId) => Promise<boolean>;
 

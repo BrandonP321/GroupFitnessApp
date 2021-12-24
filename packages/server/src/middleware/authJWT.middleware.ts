@@ -2,7 +2,7 @@ import { JWTUtils } from "~Utils/JWTUtils";
 import { RouteMiddleware } from ".";
 import { Response } from "express";
 import mongoose from "mongoose";
-import { ControllerUtils } from "~Utils"
+import { ControllerUtils, MongooseUtils } from "~Utils"
 import { ClientErrorStatusCodes } from "@groupfitnessapp/common/src/api/requests/statusCodes";
 import { RequestErrors } from "@groupfitnessapp/common/src/api/requests/RequestErrors";
 import db from "~Models";
@@ -31,12 +31,13 @@ export const authenticateJWT: RouteMiddleware<{ UrlParams: {}, ReqBody: {}, ResB
             return verifyTokenHash(token.userId, token.jwtHash, () => haveUserReAuth(res), () => haveClientSendRefreshToken(res));
         }
 
-        try {
-            res.locals.user = { id: new mongoose.Types.ObjectId(token.userId) };
-        } catch (err) {
-            // if userId provided is not valid will throw and error, user needs to re-auth
+        const userId = MongooseUtils.idStringToMongooseId(token.userId);
+
+        if (!userId) {
             return haveUserReAuth(res);
         }
+
+        res.locals.user = { id: userId }
         
         next();
     } else {

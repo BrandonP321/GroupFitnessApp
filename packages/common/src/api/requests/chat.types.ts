@@ -74,3 +74,44 @@ export type GetChatErrResponse = {
         } | ProtectedRouteErrors
     }
 }
+
+export interface AddUserToChatRequest {
+    UrlParams: {
+
+    }
+    ReqBody: {
+        chatId: string;
+        userId: string;
+    }
+    ResBody: {
+
+    } & IShallowChatJSONResponse
+}
+
+export const AddUserToChatErrors = {
+    InvalidChatOrUserId: RequestErrors.InvalidId,
+    AuthUserNotInChat: RequestErrors.InvalidUserCredentials,
+    UserAlreadyInChat: RequestErrors.UserAlreadyInChat,
+    ChatIsGroupChat: RequestErrors.ChatIsGroupChat,
+    UnexpectedCondition: RequestErrors.UnexpectedCondition
+} as const;
+
+export type AddUserToChatErrResponse = {
+    response: {
+        status: ClientErrorStatusCodes | ServerErrorStatusCodes;
+        data: {
+            error: typeof AddUserToChatErrors.InvalidChatOrUserId,
+            errMsg: string;
+            invalidId: "chatId" | "userId"
+        } | {
+            error: typeof AddUserToChatErrors.AuthUserNotInChat;
+            errMsg: string;
+        } | {
+            error: typeof AddUserToChatErrors.UserAlreadyInChat;
+            errMsg: string;
+        } | {
+            error: typeof AddUserToChatErrors.ChatIsGroupChat;
+            errMsg: string;
+        } | ProtectedRouteErrors
+    }
+}

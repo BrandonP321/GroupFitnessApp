@@ -1,15 +1,16 @@
 import { ControllerUtils } from "~Utils/ControllerUtils";
 import db from "~Models"
-import mongoose, { CallbackError } from "mongoose";
+import mongoose, { CallbackError, NativeError } from "mongoose";
 import { ChatUtils, EnvUtils, EnvVars } from "@groupfitnessapp/common/src/utils";
 import { ClientErrorStatusCodes } from "@groupfitnessapp/common/src/api/requests/statusCodes";
 import type { RouteController } from "./index";
-import { ChatCreationErrors, ChatCreationErrResponse, CreateChatRequest, GetChatErrors, GetChatErrResponse, GetChatRequest } from "@groupfitnessapp/common/src/api/requests/chat.types";
+import { AddUserToChatErrors, AddUserToChatErrResponse, AddUserToChatRequest, ChatCreationErrors, ChatCreationErrResponse, CreateChatRequest, GetChatErrors, GetChatErrResponse, GetChatRequest } from "@groupfitnessapp/common/src/api/requests/chat.types";
 import { IChat, IChatDocument, IChatModel, IFullChatJSONResponse, IShallowChatJSONResponse, TToFullChatJSONResponse } from "@groupfitnessapp/common/src/api/models/Chat.model";
 import { IBaseModelProperties } from "@groupfitnessapp/common/src/api/models";
 import { IChatDocSaveErr } from "~Models/Chat/ChatMethods";
 import { IAuthJWTResLocals } from "~Middleware/authJWT.middleware";
 import { MongooseUtils } from "~Utils/MongooseUtils";
+import { IUserDocument } from "@groupfitnessapp/common/src/api/models/User.model";
 
 interface DBUpdateResponse {
     acknowledged: boolean;
@@ -18,6 +19,8 @@ interface DBUpdateResponse {
     upsertedCount: number;
     matchedCount: number;
 }
+
+type DBFoundChatDoc = IChatDocument | null;
 
 export const CreateChatController: RouteController<CreateChatRequest, IAuthJWTResLocals> = async (req, res) => {
     const inputErr = ChatUtils.validateChatCreationFields(req.body)
@@ -43,8 +46,8 @@ export const CreateChatController: RouteController<CreateChatRequest, IAuthJWTRe
     } catch (err) {
         return ControllerUtils.respondWithErr<ChatCreationErrResponse>({
             status: ClientErrorStatusCodes.Conflict,
-            data: { 
-                error: ChatCreationErrors.InvalidUserIds, 
+            data: {
+                error: ChatCreationErrors.InvalidUserIds,
                 allIds: [...req.body.usersToAdd, res.locals.user.id.toString()],
                 errMsg: "One or more user Id's provided for chat creation were invalid"
             }
@@ -72,12 +75,9 @@ export const CreateChatController: RouteController<CreateChatRequest, IAuthJWTRe
             // populate user id's in arr of users in this chat
             await chat.populateUsers();
 
-            let chatJSON: IShallowChatJSONResponse;
+            let chatJSON = await chat.toShallowChatJSONResponse();
 
-            try {
-                // only grab enough data for client to direct user to chat page
-                chatJSON = await chat.toShallowChatJSONResponse();
-            } catch (err) {
+            if (!chatJSON) {
                 return ControllerUtils.respondWithUnexpectedErr(res);
             }
 
@@ -89,22 +89,26 @@ export const CreateChatController: RouteController<CreateChatRequest, IAuthJWTRe
 export const GetChatController: RouteController<GetChatRequest, IAuthJWTResLocals> = async (req, res) => {
     const { params } = req;
 
+    const invalidChatIdErr = () => ControllerUtils.respondWithErr<GetChatErrResponse>({
+        status: ClientErrorStatusCodes.Unauthorized,
+        data: {
+            error: GetChatErrors.InvalidChatId,
+            errMsg: "The chat id provided was invalid."
+        }
+    }, res)
+
     let chatId = MongooseUtils.idStringToMongooseId(params.chatId);
 
     if (!chatId) {
-        return ControllerUtils.respondWithErr<GetChatErrResponse>({
-            status: ClientErrorStatusCodes.Unauthorized,
-            data: {
-                error: GetChatErrors.InvalidChatId,
-                errMsg: "The chat id provided was invalid."
-            }
-        }, res)
+        return invalidChatIdErr();
     }
 
-    db.Chat.findById(chatId, async (err: any, chat: IChatDocument) => {
+    db.Chat.findById(chatId, async (err: any, chat: DBFoundChatDoc) => {
         if (err) {
             console.log(err);
-            return res.status(500).end();
+            return ControllerUtils.respondWithUnexpectedErr(res);
+        } else if (!chat) {
+            return invalidChatIdErr();
         }
 
         // verify that the user requesting the chat data is a part of the chat
@@ -115,26 +119,114 @@ export const GetChatController: RouteController<GetChatRequest, IAuthJWTResLocal
                 status: ClientErrorStatusCodes.Forbidden,
                 data: {
                     error: GetChatErrors.UserNotPartOfChat,
-                    errMsg: "User Requesting data on chat is not a user within that chat"
+                    errMsg: "User does not have access to this chat"
                 }
             }, res)
         }
 
         await chat.populateUsers();
 
-        let chatJSON: IFullChatJSONResponse;
+        let chatJSON = await chat.toFullChatJSONResponse();
 
-        try {
-            chatJSON = await chat.toFullChatJSONResponse();
-        } catch (err) {
-            console.log(err);
-            return res.status(500).end();
+        if (!chatJSON) {
+            return ControllerUtils.respondWithUnexpectedErr(res);
         }
 
         res.json(chatJSON).end();
     })
 }
 
-// export const AddUserToChatController: RouteController = async (req, res) => {
+export const AddUserToChatController: RouteController<AddUserToChatRequest, IAuthJWTResLocals> = async (req, res) => {
+    const { body } = req;
+    const { locals } = res;
 
-// }
+    const chatId = MongooseUtils.idStringToMongooseId(body.chatId);
+    const userId = MongooseUtils.idStringToMongooseId(body.userId);
+
+    const respondWithInvalidId = (invalidId: "chatId" | "userId") => ControllerUtils.respondWithErr<AddUserToChatErrResponse>({
+        status: ClientErrorStatusCodes.NotFound,
+        data: {
+            error: AddUserToChatErrors.InvalidChatOrUserId,
+            invalidId: invalidId,
+            errMsg: invalidId === "chatId" ? "Invalid Chat" : "Invalid User Id"
+        }
+    }, res)
+
+    if (!chatId || !userId) {
+        return respondWithInvalidId(!chatId ? "chatId" : "userId");
+    }
+
+    // must first verify that the user attempting to add the new user is in the chat already
+    db.Chat.findById(chatId, async (err: NativeError, chat: DBFoundChatDoc) => {
+        if (err) {
+            return ControllerUtils.respondWithUnexpectedErr(res);
+        } else if (!chat) {
+            return respondWithInvalidId("chatId");
+        }
+
+        const isAuthUserInChat = chat.verifyAuthUserIsInChat(locals.user.id);
+        if (!isAuthUserInChat) {
+            return ControllerUtils.respondWithErr<AddUserToChatErrResponse>({
+                status: ClientErrorStatusCodes.Unauthorized,
+                data: {
+                    error: AddUserToChatErrors.AuthUserNotInChat,
+                    errMsg: "Auth user does not have access to this chat"
+                }
+            },res)
+        }
+
+        // check if new user is already in the chat
+        const isNewUserAlreadyInChat = !!chat.users.find(u => u.toString() === body.userId);
+        if (isNewUserAlreadyInChat) {
+            return ControllerUtils.respondWithErr<AddUserToChatErrResponse>({
+                status: ClientErrorStatusCodes.Conflict,
+                data: {
+                    error: AddUserToChatErrors.UserAlreadyInChat,
+                    errMsg: "User is already a member of this chat"
+                }
+            }, res)
+        }
+
+        // make sure chat is a group chat
+        if (!chat.isGroupChat) {
+            return ControllerUtils.respondWithErr<AddUserToChatErrResponse>({
+                status: ClientErrorStatusCodes.Conflict,
+                data: {
+                    error: AddUserToChatErrors.ChatIsGroupChat,
+                    errMsg: "Users can only be added to a group chat"
+                }
+            }, res)
+        }
+
+        // add chat to new user's list of chats
+        db.User.updateOne({ _id: userId }, { $push: { chats: chatId } }, async (err: NativeError, user: DBUpdateResponse) => {
+            if (err) {
+                console.log(err);
+                return ControllerUtils.respondWithUnexpectedErr(res);
+            } else if (user.modifiedCount === 0) {
+                return respondWithInvalidId("userId");
+            }
+
+            // add user to the chat's list of users
+            db.Chat.updateOne({ _id: body.chatId }, { $push: { users: userId } }, async (err: NativeError, chatUpdate: DBUpdateResponse) => {
+                if (err) {
+                    console.log(err)
+                    return ControllerUtils.respondWithUnexpectedErr(res);
+                } else if (chatUpdate.modifiedCount === 0) {
+                    return respondWithInvalidId("chatId");
+                }
+
+                await chat.populateUsers();
+
+                const chatJSON = await chat.toShallowChatJSONResponse();
+
+                if (!chatJSON) {
+                    return ControllerUtils.respondWithUnexpectedErr(res);
+                }
+
+                return res.json(chatJSON).end()
+            })
+        })
+        
+    })
+}

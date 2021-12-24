@@ -5,6 +5,8 @@ export const RequestErrors = {
     InvalidUserCredentials: "EZ-Bar",
     OneOrMoreInvalidUserIds: "Spotter",
     InvalidId: "Cables",
+    UserAlreadyInChat: "Superset",
+    ChatIsGroupChat: "Eliptical",
 
     /* MONGOOSE ERRORS */
     UniqueFieldTaken: "Dumbbell",

@@ -5,7 +5,11 @@ export class MongooseUtils {
 
     }
 
-    public static idStringToMongooseId(id: string) {
+    public static idStringToMongooseId(id: string | undefined) {
+        if (!id) {
+            return undefined;
+        }
+        
         try {
             return new mongoose.Types.ObjectId(id);
         } catch (err) {
