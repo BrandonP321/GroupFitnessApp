@@ -4,7 +4,7 @@ import mongoose, { CallbackError, NativeError } from "mongoose";
 import { ChatUtils, EnvUtils, EnvVars } from "@groupfitnessapp/common/src/utils";
 import { ClientErrorStatusCodes } from "@groupfitnessapp/common/src/api/requests/statusCodes";
 import type { RouteController } from "./index";
-import { AddUserToChatErrors, AddUserToChatErrResponse, AddUserToChatRequest, ChatCreationErrors, ChatCreationErrResponse, CreateChatRequest, GetChatErrors, GetChatErrResponse, GetChatRequest } from "@groupfitnessapp/common/src/api/requests/chat.types";
+import { AddUserToChatErrors, AddUserToChatErrResponse, AddUserToChatRequest, ChatCreationErrors, ChatCreationErrResponse, CreateChatRequest, GetChatErrors, GetChatErrResponse, GetChatRequest, RemoveUserFromChatErrors, RemoveUserFromChatErrResponse, RemoveUserFromChatRequest } from "@groupfitnessapp/common/src/api/requests/chat.types";
 import { IChat, IChatDocument, IChatModel, IFullChatJSONResponse, IShallowChatJSONResponse, TToFullChatJSONResponse } from "@groupfitnessapp/common/src/api/models/Chat.model";
 import { IBaseModelProperties } from "@groupfitnessapp/common/src/api/models";
 import { IChatDocSaveErr } from "~Models/Chat/ChatMethods";
@@ -209,6 +209,89 @@ export const AddUserToChatController: RouteController<AddUserToChatRequest, IAut
 
             // add user to the chat's list of users
             db.Chat.updateOne({ _id: body.chatId }, { $push: { users: userId } }, async (err: NativeError, chatUpdate: DBUpdateResponse) => {
+                if (err) {
+                    console.log(err)
+                    return ControllerUtils.respondWithUnexpectedErr(res);
+                } else if (chatUpdate.modifiedCount === 0) {
+                    return respondWithInvalidId("chatId");
+                }
+
+                await chat.populateUsers();
+
+                const chatJSON = await chat.toShallowChatJSONResponse();
+
+                if (!chatJSON) {
+                    return ControllerUtils.respondWithUnexpectedErr(res);
+                }
+
+                return res.json(chatJSON).end()
+            })
+        })
+        
+    })
+}
+
+export const RemoveUserFromChatController: RouteController<RemoveUserFromChatRequest, IAuthJWTResLocals> = async (req, res) => {
+    const { body } = req;
+    const { locals } = res;
+
+    const chatId = MongooseUtils.idStringToMongooseId(body.chatId);
+    const userId = MongooseUtils.idStringToMongooseId(body.userId);
+
+    const respondWithInvalidId = (invalidId: "chatId" | "userId") => ControllerUtils.respondWithErr<RemoveUserFromChatErrResponse>({
+        status: ClientErrorStatusCodes.NotFound,
+        data: {
+            error: RemoveUserFromChatErrors.InvalidChatOrUserId,
+            invalidId: invalidId,
+            errMsg: invalidId === "chatId" ? "Invalid Chat" : "Invalid User Id"
+        }
+    }, res)
+
+    if (!chatId || !userId) {
+        return respondWithInvalidId(!chatId ? "chatId" : "userId");
+    }
+
+    db.Chat.findById(chatId, async (err: NativeError, chat: DBFoundChatDoc) => {
+        if (err) {
+            return ControllerUtils.respondWithUnexpectedErr(res);
+        } else if (!chat) {
+            return respondWithInvalidId("chatId");
+        }
+
+        // chat must be a group chat to remove users
+        if (!chat.isGroupChat) {
+            return ControllerUtils.respondWithErr<RemoveUserFromChatErrResponse>({
+                status: ClientErrorStatusCodes.Conflict,
+                data: {
+                    error: RemoveUserFromChatErrors.ChatIsNotGroupChat,
+                    errMsg: "Users can only be removed from a group chat"
+                }
+            }, res)
+        }
+
+        // auth user must be a part of this chat to remove another user
+        const isAuthUserInChat = chat.verifyAuthUserIsInChat(locals.user.id);
+        if (!isAuthUserInChat) {
+            return ControllerUtils.respondWithErr<RemoveUserFromChatErrResponse>({
+                status: ClientErrorStatusCodes.Unauthorized,
+                data: {
+                    error: RemoveUserFromChatErrors.AuthUserNotInChat,
+                    errMsg: "Auth user does not have access to this chat"
+                }
+            },res) 
+        }
+
+        // remove chat from user's list of chats
+        db.User.updateOne({ _id: userId }, { $pull: { chats: chatId } }, async (err: NativeError, user: DBUpdateResponse) => {
+            if (err) {
+                console.log(err);
+                return ControllerUtils.respondWithUnexpectedErr(res);
+            } else if (user.modifiedCount === 0) {
+                return respondWithInvalidId("userId");
+            }
+
+            // remove user from chat's list of users
+            db.Chat.updateOne({ _id: body.chatId }, { $pull: { users: userId } }, async (err: NativeError, chatUpdate: DBUpdateResponse) => {
                 if (err) {
                     console.log(err)
                     return ControllerUtils.respondWithUnexpectedErr(res);

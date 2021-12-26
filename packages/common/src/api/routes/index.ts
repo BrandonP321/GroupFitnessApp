@@ -20,7 +20,8 @@ export const UserRoutes = {
 export const ChatRoutes = {
     createNewChat: () => "/api/chat/create",
     getChat: (params?: GetChatRequest["UrlParams"]) => `/api/chat/${params?.chatId ?? ":chatId"}`,
-    addUserToChat: () => "/api/chat/users/add"
+    addUserToChat: () => "/api/chat/users/add",
+    removeUserFromChat: () => "/api/chat/users/remove"
 }
 
 export const Routes = {

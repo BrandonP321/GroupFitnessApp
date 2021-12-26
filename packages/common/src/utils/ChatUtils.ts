@@ -10,8 +10,8 @@ export class ChatUtils {
         if (!fields.usersToAdd || fields.usersToAdd.length === 0) {
             console.log(fields.usersToAdd);
             return { field: "usersToAdd", msg: "Must add other users to the group on creation" }
-        } else if (fields.isGroupChat && !fields.chatImg) {
-            return { field: "chatImg", msg: "Please provide a name for the new chat" };
+        } else if (fields.isGroupChat && !fields.chatName) {
+            return { field: "chatName", msg: "Please provide a name for the new chat" };
         } else if (fields.isGroupChat && !fields.chatImg) {
             return { field: "chatImg", msg: "Please provide an image for the new chat" }
         }

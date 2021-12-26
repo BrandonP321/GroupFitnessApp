@@ -7,6 +7,7 @@ export const RequestErrors = {
     InvalidId: "Cables",
     UserAlreadyInChat: "Superset",
     ChatIsGroupChat: "Eliptical",
+    ChatIsNotGroupChat: "Bike",
 
     /* MONGOOSE ERRORS */
     UniqueFieldTaken: "Dumbbell",

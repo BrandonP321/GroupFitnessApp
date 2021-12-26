@@ -115,3 +115,40 @@ export type AddUserToChatErrResponse = {
         } | ProtectedRouteErrors
     }
 }
+
+export interface RemoveUserFromChatRequest {
+    UrlParams: {
+
+    }
+    ReqBody: {
+        chatId: string;
+        userId: string;
+    }
+    ResBody: {
+
+    } & IShallowChatJSONResponse
+}
+
+export const RemoveUserFromChatErrors = {
+    InvalidChatOrUserId: RequestErrors.InvalidId,
+    AuthUserNotInChat: RequestErrors.InvalidUserCredentials,
+    ChatIsNotGroupChat: RequestErrors.ChatIsNotGroupChat,
+    UnexpectedCondition: RequestErrors.UnexpectedCondition
+} as const;
+
+export type RemoveUserFromChatErrResponse = {
+    response: {
+        status: ClientErrorStatusCodes | ServerErrorStatusCodes;
+        data: {
+            error: typeof RemoveUserFromChatErrors.InvalidChatOrUserId,
+            errMsg: string;
+            invalidId: "chatId" | "userId"
+        } | {
+            error: typeof RemoveUserFromChatErrors.AuthUserNotInChat;
+            errMsg: string;
+        } | {
+            error: typeof RemoveUserFromChatErrors.ChatIsNotGroupChat;
+            errMsg: string;
+        } | ProtectedRouteErrors
+    }
+}
