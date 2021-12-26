@@ -3,22 +3,13 @@ import db from "~Models"
 import mongoose, { CallbackError, NativeError } from "mongoose";
 import { ChatUtils, EnvUtils, EnvVars } from "@groupfitnessapp/common/src/utils";
 import { ClientErrorStatusCodes } from "@groupfitnessapp/common/src/api/requests/statusCodes";
-import type { RouteController } from "./index";
+import type { DBUpdateResponse, RouteController } from "./index";
 import { AddUserToChatErrors, AddUserToChatErrResponse, AddUserToChatRequest, ChatCreationErrors, ChatCreationErrResponse, CreateChatRequest, GetChatErrors, GetChatErrResponse, GetChatRequest, RemoveUserFromChatErrors, RemoveUserFromChatErrResponse, RemoveUserFromChatRequest } from "@groupfitnessapp/common/src/api/requests/chat.types";
 import { IChat, IChatDocument, IChatModel, IFullChatJSONResponse, IShallowChatJSONResponse, TToFullChatJSONResponse } from "@groupfitnessapp/common/src/api/models/Chat.model";
 import { IBaseModelProperties } from "@groupfitnessapp/common/src/api/models";
 import { IChatDocSaveErr } from "~Models/Chat/ChatMethods";
 import { IAuthJWTResLocals } from "~Middleware/authJWT.middleware";
 import { MongooseUtils } from "~Utils/MongooseUtils";
-import { IUserDocument } from "@groupfitnessapp/common/src/api/models/User.model";
-
-interface DBUpdateResponse {
-    acknowledged: boolean;
-    modifiedCount: number;
-    upsertedId: null;
-    upsertedCount: number;
-    matchedCount: number;
-}
 
 type DBFoundChatDoc = IChatDocument | null;
 

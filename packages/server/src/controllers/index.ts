@@ -9,7 +9,7 @@ export type RouteController<T extends { UrlParams: {}; ReqBody: {}; ResBody: {} 
 export interface DBUpdateResponse {
     acknowledged: boolean;
     modifiedCount: number;
-    upsertedId: any;
+    upsertedId: null;
     upsertedCount: number;
     matchedCount: number;
 }

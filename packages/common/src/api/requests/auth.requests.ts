@@ -1,7 +1,8 @@
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 import { LoginUserRequest, RefreshTokensRequest, RegisterUserRequest } from "./auth.types";
 import { Routes } from "..";
 import { APIUtils } from "~Utils/APIUtils";
+import { APIRequest } from ".";
 
 // GET
 
@@ -9,16 +10,16 @@ import { APIUtils } from "~Utils/APIUtils";
 
 const APIDomain = APIUtils.getApiDomain();
 
-export function RegisterUser (bodyParams: RegisterUserRequest["ReqBody"]): Promise<AxiosResponse<RegisterUserRequest["ResBody"]>> {
-    return axios.post(`${APIDomain}${Routes.RegisterUser()}`, bodyParams);
+export const RegisterUser: APIRequest<RegisterUserRequest> = (urlParams, bodyParams) =>  {
+    return axios.post(`${APIDomain}${Routes.RegisterUser(urlParams)}`, bodyParams);
 }
 
-export function LoginUser (bodyParams: LoginUserRequest["ReqBody"]): Promise<AxiosResponse<LoginUserRequest["ResBody"]>> {
-    return axios.post(`${APIDomain}${Routes.LoginUser()}`, bodyParams);
+export const LoginUser: APIRequest<LoginUserRequest> = (urlParams, bodyParams) => {
+    return axios.post(`${APIDomain}${Routes.LoginUser(urlParams)}`, bodyParams);
 }
 
-export function RefreshTokens (bodyParams: RefreshTokensRequest["ReqBody"]): Promise<AxiosResponse<RefreshTokensRequest["ResBody"]>> {
-    return axios.post(`${APIDomain}${Routes.RefreshTokens()}`, bodyParams);
+export const RefreshTokens: APIRequest<RefreshTokensRequest> = (urlParams, bodyParams) => {
+    return axios.post(`${APIDomain}${Routes.RefreshTokens(urlParams)}`, bodyParams);
 }
 
 // PUT
