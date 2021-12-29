@@ -19,6 +19,9 @@ export interface CreateChatRequest {
     ResBody: {
 
     } & IShallowChatJSONResponse
+    headers: {
+        
+    }
 }
 
 export const ChatCreationErrors = {
@@ -54,6 +57,9 @@ export interface GetChatRequest {
     ResBody: {
 
     } & IFullChatJSONResponse
+    headers: {
+        
+    }
 }
 
 export const GetChatErrors = {
@@ -86,6 +92,9 @@ export interface AddUserToChatRequest {
     ResBody: {
 
     } & IShallowChatJSONResponse
+    headers: {
+        
+    }
 }
 
 export const AddUserToChatErrors = {
@@ -127,6 +136,9 @@ export interface RemoveUserFromChatRequest {
     ResBody: {
 
     } & IShallowChatJSONResponse
+    headers: {
+        
+    }
 }
 
 export const RemoveUserFromChatErrors = {

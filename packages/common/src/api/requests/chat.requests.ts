@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 import { ChatRoutes } from "~API/routes";
 import { APIUtils } from "~Utils/APIUtils";
 import { APIRequest } from ".";

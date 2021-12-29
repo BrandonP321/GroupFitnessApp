@@ -1,7 +1,7 @@
 import axios from "axios";
 import { LoginUserRequest, RefreshTokensRequest, RegisterUserRequest } from "./auth.types";
 import { Routes } from "..";
-import { APIUtils } from "~Utils/APIUtils";
+import { APIUtils } from "../../utils/APIUtils";
 import { APIRequest } from ".";
 
 // GET
@@ -18,8 +18,8 @@ export const LoginUser: APIRequest<LoginUserRequest> = (urlParams, bodyParams) =
     return axios.post(`${APIDomain}${Routes.LoginUser(urlParams)}`, bodyParams);
 }
 
-export const RefreshTokens: APIRequest<RefreshTokensRequest> = (urlParams, bodyParams) => {
-    return axios.post(`${APIDomain}${Routes.RefreshTokens(urlParams)}`, bodyParams);
+export const RefreshTokens: APIRequest<RefreshTokensRequest> = (urlParams, bodyParams, headers) => {
+    return axios.post(`${APIDomain}${Routes.RefreshTokens(urlParams)}`, bodyParams, { headers });
 }
 
 // PUT

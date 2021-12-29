@@ -1,4 +1,5 @@
 import { IUserShallowResponse } from "@groupfitnessapp/common/src/api/models/User.model";
+import { APIRequestResponse } from ".";
 import { TRegistrationFields } from "../../utils/AuthUtils";
 import { RequestErrors } from "./RequestErrors";
 import { ClientErrorStatusCodes, ServerErrorStatusCodes } from "./statusCodes";
@@ -19,6 +20,9 @@ export interface RegisterUserRequest {
         accessToken: string;
         refreshToken: string;
     } & IUserShallowResponse
+    headers: {
+
+    }
 }
 
 export const RegisterUserErrors = {
@@ -57,6 +61,9 @@ export interface LoginUserRequest {
         accessToken: string;
         refreshToken: string;
     } & IUserShallowResponse,
+    headers: {
+        
+    }
 }
 
 export const LoginUserErrors = {
@@ -92,6 +99,9 @@ export interface RefreshTokensRequest {
         accessToken: string;
         refreshToken: string;
     },
+    headers: {
+        authorization: string;
+    }
 }
 
 export enum RefreshTokensErrCodes {
